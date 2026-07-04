@@ -1,0 +1,31 @@
+Functional Requirements
+---------------------------
+1. Top-K most viewed of all time
+2. Top-K for given window {last week , last month}
+
+Tumbling window -> week (7 day) , month (30 day)
+
+Might not consider
+* Arbitrary window
+
+
+Non-functional requirement
+---------------------------
+Latency : 1 min between when event happened and when it got tabulated in top-k
+TopK API latency : approx 10ms
+scale : Billions of videos
+view/sec : thousands of views
+precise result (no approximation)
+
+
+
+
+
+
+
+
+
+
+
+
+
