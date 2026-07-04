@@ -1,2 +1,6 @@
 # Exclude large third-party reference content
 reference/claude-cookbooks/
+
+# Python compiled artifacts
+**/__pycache__/
+*.pyc
