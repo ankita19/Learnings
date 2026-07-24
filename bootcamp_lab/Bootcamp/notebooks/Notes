@@ -1,0 +1,5 @@
+Terms to remember
+1. Logistic Regression:  is a fundamental Machine Learning algorithm used to classify data into distinct categories (such as "Yes/No", "Spam/Not Spam", or "Fraud/Legitimate")
+Core Lifecycle[ Input Data ] ➔ [ Weight Calculations ] ➔ [ Sigmoid Function ] ➔ [ Probability (0 to 1) ] ➔ [ Final Class Prediction ]
+2. ROC-AUC = Area Under the Receiver Operating Characteristic Curve. It measures how well a model separates the two classes (churn vs. no-churn) across all possible thresholds, not just one fixed cutoff.
+3. Gradient :  The slope of the loss function w.r.t. model weights — tells the model which direction to adjust weights to reduce error; used in gradient descent (training) and gradient boosting (sequential error-correction).

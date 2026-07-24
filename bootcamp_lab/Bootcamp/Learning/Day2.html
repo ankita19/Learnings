@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Day 2 - Transformers Summary</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  body {
+    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 0 20px;
+    line-height: 1.6;
+    color: #222;
+    background: #fafafa;
+  }
+  h1 {
+    text-align: center;
+    color: #1a1a2e;
+    border-bottom: 3px solid #4361ee;
+    padding-bottom: 10px;
+  }
+  h2 {
+    color: #1a1a2e;
+    margin-top: 40px;
+    border-left: 5px solid #4361ee;
+    padding-left: 10px;
+  }
+  h4 {
+    color: #4361ee;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 30px 0;
+  }
+  code {
+    background: #eef0ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .mermaid {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .diagram-title {
+    font-weight: bold;
+    color: #4361ee;
+    margin-top: 10px;
+  }
+  ul, ol {
+    margin-left: 10px;
+  }
+  .section {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 2 Lab Summary: Transformers</h1>
+
+<div class="section">
+<p class="diagram-title">Overall Session Flow</p>
+<div class="mermaid">
+flowchart TD
+    A[Foundations & Motivation for Transformers] --> B[Historical Evolution of Language Modeling]
+    B --> C[The Transformer Revolution]
+    C --> D[Transformer Architecture Overview]
+    D --> E[Self-Supervised Learning & Cross-Entropy Loss]
+    E --> F[Tokenization]
+    F --> G[Embeddings & Text Representation]
+    G --> H[Attention Mechanism]
+    H --> I[Multi-Head Attention]
+    I --> J[Transformer Blocks]
+    J --> K[Training vs Inference]
+    K --> L[KV Caching]
+    L --> M[Encoder & Decoder Architectures]
+    M --> N[Practical Lab Concepts]
+</div>
+</div>
+
+<div class="section">
+<h2>Foundations and Motivation for Transformers</h2>
+<p>The session began with a discussion of why foundational machine learning concepts remain important in the era of large language models. The instructor explained that understanding basic machine learning models and neural networks is necessary for understanding transformer architectures and making informed decisions about when simpler models may be more appropriate than large language models.</p>
+
+<p>Key concepts reviewed included:</p>
+<ul>
+<li>Traditional machine learning models versus neural networks.</li>
+<li>The importance of understanding model trade-offs.</li>
+<li>Why not every problem requires a frontier-scale language model.</li>
+<li>The role of judgment in selecting the appropriate modeling approach.</li>
+</ul>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Historical Evolution of Language Modeling</h2>
+<p>A historical overview traced the progression of language-processing techniques leading to transformers.</p>
+
+<p class="diagram-title">Evolution Timeline</p>
+<div class="mermaid">
+flowchart LR
+    A[N-gram Models] -->|Limited by vocabulary explosion| B[RNNs]
+    B -->|Improved with memory cells| C[LSTM / GRU]
+    C -->|Still sequential & memory fades| D[Seq2Seq with Attention]
+    D -->|Removed recurrence| E[Transformers]
+</div>
+
+<p>Topics discussed:</p>
+<ul>
+<li><strong>N-gram models</strong> and their reliance on word frequency counts.</li>
+<li>Limitations of n-grams due to exploding vocabulary combinations.</li>
+<li><strong>Recurrent Neural Networks (RNNs)</strong> and their ability to process sequences while maintaining memory.</li>
+<li><strong>LSTM</strong> and <strong>GRU</strong> architectures as improvements over basic RNNs.</li>
+<li>The challenges of sequential processing and fading memory in long sequences.</li>
+<li><strong>Sequence-to-sequence models with attention</strong>, which improved handling of long-range dependencies.</li>
+</ul>
+
+<p>Participants discussed how attention mechanisms improved language understanding before the introduction of transformers.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>The Transformer Revolution</h2>
+<p>The session introduced the central idea behind transformers: retaining attention while removing recurrent processing.</p>
+
+<p>Major concepts included:</p>
+<ul>
+<li>The significance of the &ldquo;Attention Is All You Need&rdquo; architecture.</li>
+<li>Processing entire sequences in parallel rather than token by token.</li>
+<li>Direct connections between distant words through attention.</li>
+<li>Improved scalability with larger datasets and more compute resources.</li>
+<li>Why transformers became the foundation for modern language models.</li>
+</ul>
+
+<p class="diagram-title">Transformer Family Split</p>
+<div class="mermaid">
+flowchart TD
+    T[Transformer Building Blocks] --> ENC[Encoder-only e.g. BERT]
+    T --> DEC[Decoder-only e.g. GPT]
+</div>
+
+<p>The discussion also briefly introduced:</p>
+<ul>
+<li><strong>Encoder-only architectures</strong> such as BERT.</li>
+<li><strong>Decoder-only architectures</strong> such as GPT.</li>
+<li>The ability to derive different model types from the same transformer building blocks.</li>
+</ul>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Transformer Architecture Overview</h2>
+<p>The instructor presented the high-level transformer pipeline and explained how language models process text.</p>
+
+<p class="diagram-title">Transformer Pipeline</p>
+<div class="mermaid">
+flowchart LR
+    A[Raw Text Input] --> B[Tokenization]
+    B --> C[Embedding Generation]
+    C --> D[Attention-based Contextualization]
+    D --> E[Prediction of Next Token]
+</div>
+
+<p>A central theme emphasized throughout the session was that language models fundamentally perform <strong>next-token prediction</strong>, with many advanced capabilities emerging from this simple objective.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Self-Supervised Learning and Cross-Entropy Loss</h2>
+<p>The session explained how language models learn without manually labeled datasets.</p>
+
+<p>Main concepts:</p>
+<ul>
+<li>Self-supervised learning through hidden or future tokens.</li>
+<li>Creation of training targets directly from the text itself.</li>
+<li>Reuse of cross-entropy loss from traditional classification problems.</li>
+<li>Viewing next-token prediction as a classification task over an entire vocabulary.</li>
+</ul>
+
+<p>The instructor walked through a detailed example showing how probability distributions, one-hot labels, and cross-entropy calculations relate to language-model training.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Tokenization</h2>
+<p>A major chapter of the session focused on tokenization.</p>
+
+<p class="diagram-title">Tokenization Strategies Compared</p>
+<div class="mermaid">
+flowchart TD
+    Tok[Tokenization Strategies] --> Word[Word-Level]
+    Tok --> Char[Character-Level]
+    Tok --> Sub[Subword]
+
+    Word --> WordCon["Large vocabularies<br/>Unknown words"]
+    Char --> CharCon["No unknown words<br/>Very long sequences"]
+    Sub --> SubPro["Modern standard<br/>Balances vocab size & sequence length<br/>Handles rare words via fragments"]
+</div>
+
+<h4>Word-Level Tokenization</h4>
+<ul>
+<li>One token per word.</li>
+<li>Suffers from large vocabularies and unknown words.</li>
+</ul>
+
+<h4>Character-Level Tokenization</h4>
+<ul>
+<li>One token per character.</li>
+<li>Avoids unknown words but produces very long sequences.</li>
+</ul>
+
+<h4>Subword Tokenization</h4>
+<ul>
+<li>The modern standard approach.</li>
+<li>Balances vocabulary size and sequence length.</li>
+<li>Handles rare words by breaking them into reusable fragments.</li>
+</ul>
+
+<p>Additional topics included:</p>
+<ul>
+<li>Token IDs and vocabularies.</li>
+<li>Special tokens marking sequence boundaries.</li>
+<li>Why token counts affect latency and cost.</li>
+<li>Language-specific tokenization differences.</li>
+<li>The role of training data in tokenizer behavior.</li>
+</ul>
+
+<p>Participants experimented with tokenization examples and discussed how tokenizers split different words.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Embeddings and Text Representation</h2>
+<p>The next section covered how tokens become meaningful numerical representations.</p>
+
+<p class="diagram-title">Representation Methods</p>
+<div class="mermaid">
+flowchart LR
+    A[Tokens] --> B[One-hot Encoding]
+    A --> C[Bag-of-Words / TF-IDF]
+    A --> D[Dense Learned Embeddings]
+    D --> E[+ Positional Information]
+    E --> F[Contextual Embeddings]
+</div>
+
+<p>Representation methods discussed:</p>
+<ul>
+<li>One-hot encoding.</li>
+<li>Bag-of-Words and TF-IDF.</li>
+<li>Dense learned embeddings.</li>
+</ul>
+
+<p>Key ideas included:</p>
+<ul>
+<li>Embeddings position semantically related concepts near each other in vector space.</li>
+<li>Embeddings are learned automatically rather than manually designed.</li>
+<li>Similar words and concepts tend to cluster together.</li>
+<li>Positional information must be added because transformers do not inherently understand word order.</li>
+</ul>
+
+<p>The session also compared static embeddings with contextual embeddings and discussed why contextual representations are more powerful.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Attention Mechanism</h2>
+<p>A major portion of the session focused on self-attention.</p>
+
+<p class="diagram-title">Self-Attention Flow</p>
+<div class="mermaid">
+flowchart LR
+    A[Input Token] --> Q[Query]
+    A --> K[Key]
+    A --> V[Value]
+    Q --> S["Similarity via Dot Product (Q · K)"]
+    K --> S
+    S --> SM[Softmax Normalization]
+    SM --> W[Weighted Aggregation of Values]
+    V --> W
+    W --> O[Contextualized Output]
+</div>
+
+<p>Core concepts:</p>
+<ul>
+<li>Query, Key, and Value representations.</li>
+<li>Similarity computation through dot products.</li>
+<li>Softmax normalization of attention scores.</li>
+<li>Weighted aggregation of contextual information.</li>
+</ul>
+
+<p>Examples illustrated how a token can gather information from all other tokens in the sequence and assign different importance levels to surrounding words.</p>
+
+<p>Benefits discussed included:</p>
+<ul>
+<li>Capturing long-range dependencies.</li>
+<li>Avoiding the memory limitations of RNNs.</li>
+<li>Enabling efficient parallel computation on GPUs.</li>
+</ul>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Multi-Head Attention</h2>
+<p>The session then explained why a single attention mechanism is insufficient.</p>
+
+<p class="diagram-title">Multiple Heads, Different Patterns</p>
+<div class="mermaid">
+flowchart TD
+    Input[Input Sequence] --> H1[Head 1: Syntax Tracking]
+    Input --> H2[Head 2: Punctuation Handling]
+    Input --> H3[Head 3: Contextual Relationships]
+    Input --> H4[Head N: Other Emergent Patterns]
+    H1 --> Combine[Concatenate & Combine Heads]
+    H2 --> Combine
+    H3 --> Combine
+    H4 --> Combine
+</div>
+
+<p>Topics covered:</p>
+<ul>
+<li>Multiple attention heads operating in parallel.</li>
+<li>Different heads learning different language patterns.</li>
+<li>Emergent specialization rather than manually assigned roles.</li>
+<li>Examples such as syntax tracking, punctuation handling, and contextual relationships.</li>
+</ul>
+
+<p>Participants explored attention visualization examples and discussed observable patterns across layers and heads.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Transformer Blocks</h2>
+<p>The instructor assembled the components into a complete transformer block.</p>
+
+<p class="diagram-title">Transformer Block Composition</p>
+<div class="mermaid">
+flowchart TD
+    A[Input Embeddings] --> B[+ Positional Embeddings]
+    B --> C[Multi-Head Self-Attention]
+    C --> D["Residual Connection + Layer Norm"]
+    D --> E[Feed-Forward Network]
+    E --> F["Residual Connection + Layer Norm"]
+    F --> G[Output of One Transformer Block]
+    G -.->|"Stack N times"| B
+</div>
+
+<p>Key components:</p>
+<ul>
+<li>Input embeddings.</li>
+<li>Positional embeddings.</li>
+<li>Multi-head self-attention.</li>
+<li>Feed-forward neural networks.</li>
+<li>Residual connections.</li>
+<li>Layer normalization.</li>
+</ul>
+
+<p>Discussion focused on how stacking many identical blocks enables large-scale language understanding and generation.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Training Versus Inference</h2>
+<p>The session contrasted transformer training with inference.</p>
+
+<p class="diagram-title">Training vs Inference</p>
+<div class="mermaid">
+flowchart LR
+    subgraph Training
+    T1[Entire Sequence] --> T2[Parallel Processing]
+    T2 --> T3["Next-token Predictions at Every Position"]
+    T3 --> T4[Cross-Entropy Loss]
+    T4 --> T5[Gradient Updates]
+    end
+
+    subgraph Inference
+    I1[Prompt] --> I2[Prefill Stage]
+    I2 --> I3[Generate One Token]
+    I3 --> I4[Append Token]
+    I4 --> I3
+    end
+</div>
+
+<h4>Training</h4>
+<ul>
+<li>Entire sequences processed in parallel.</li>
+<li>Next-token predictions generated at every position.</li>
+<li>Cross-entropy loss computed over sequences.</li>
+<li>Efficient gradient updates through parallel processing.</li>
+</ul>
+
+<h4>Inference</h4>
+<ul>
+<li>Prompt processed first through a prefill stage.</li>
+<li>New tokens generated one at a time.</li>
+<li>Each generated token is appended and reused for the next prediction.</li>
+<li>Sequential decoding creates the primary runtime cost of language models.</li>
+</ul>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>KV Caching</h2>
+<p>The final technical topic covered inference optimization through Key-Value caching.</p>
+
+<p class="diagram-title">KV Cache Flow</p>
+<div class="mermaid">
+flowchart LR
+    A[New Token] --> B["Compute Key & Value"]
+    B --> C[Store in KV Cache]
+    C --> D["Reuse Cached Keys/Values for Attention"]
+    D --> E[Generate Next Token]
+    E --> A
+</div>
+
+<p>Main points:</p>
+<ul>
+<li>Recomputing attention for all previous tokens is expensive.</li>
+<li>Keys and values can be stored after their first computation.</li>
+<li>Cached values significantly improve generation efficiency.</li>
+<li>Longer contexts require more memory for cache storage.</li>
+<li>KV caching enables practical deployment of large language models.</li>
+</ul>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Encoder and Decoder Architectures</h2>
+<p>The session concluded by comparing encoder and decoder approaches.</p>
+
+<p class="diagram-title">Encoder vs Decoder</p>
+<div class="mermaid">
+flowchart TD
+    Base[Same Transformer Foundation] --> Enc[Encoder Models]
+    Base --> Dec[Decoder Models]
+
+    Enc --> Enc1["Trained via masked-token prediction"]
+    Enc --> Enc2["Bidirectional attention"]
+    Enc --> Enc3["Understanding & representation tasks"]
+    Enc --> Enc4["Classification & embeddings"]
+
+    Dec --> Dec1["Trained via next-token prediction"]
+    Dec --> Dec2["Attends only to previous tokens"]
+    Dec --> Dec3["Designed for generation tasks"]
+    Dec --> Dec4["Basis of modern LLMs"]
+</div>
+
+<h4>Encoder Models</h4>
+<ul>
+<li>Trained using masked-token prediction.</li>
+<li>Can attend bidirectionally across text.</li>
+<li>Strong at understanding and representation tasks.</li>
+<li>Commonly used for classification and embeddings.</li>
+</ul>
+
+<h4>Decoder Models</h4>
+<ul>
+<li>Trained using next-token prediction.</li>
+<li>Attend only to previous tokens.</li>
+<li>Designed for generation tasks.</li>
+<li>Form the basis of many modern large language models.</li>
+</ul>
+
+<p>The instructor emphasized that both architectures are built from the same transformer foundation but are trained with different objectives, leading to different capabilities.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Practical Lab Concepts</h2>
+<p>The hands-on exercises reinforced several concepts:</p>
+<ul>
+<li>Exploring tokenization behavior.</li>
+<li>Generating and comparing embeddings.</li>
+<li>Visualizing attention matrices.</li>
+<li>Comparing transformer embeddings against TF-IDF representations.</li>
+<li>Using logistic regression with transformer embeddings for classification.</li>
+<li>Examining trade-offs between accuracy, latency, and computational cost.</li>
+</ul>
+
+<p>The exercises demonstrated how richer transformer representations can improve downstream classification performance while incurring higher computational overhead.</p>
+</div>
+
+<hr>
+
+<div class="section">
+<h2>Putting It All Together: The GPT Architecture</h2>
+<p>GPT is a <strong>decoder-only transformer</strong>. It reuses every building block covered in this session, assembled into a single, repeatable pipeline that is trained once and then reused for both training and generation.</p>
+
+<p class="diagram-title">End-to-End GPT Flow</p>
+<div class="mermaid">
+flowchart TD
+    A[Raw Text Prompt] --> B[Tokenization]
+    B --> C["Token Embeddings + Positional Embeddings"]
+    C --> D["Transformer Block 1<br/>(Masked Multi-Head Self-Attention + Add & Norm + Feed-Forward + Add & Norm)"]
+    D --> E["Transformer Block 2"]
+    E --> F["... N Stacked Blocks ..."]
+    F --> G["Final Layer Norm"]
+    G --> H["Linear Projection to Vocabulary Size"]
+    H --> I["Softmax over Vocabulary"]
+    I --> J["Predicted Next Token"]
+    J -->|Append to sequence & repeat| B
+</div>
+
+<p class="diagram-title">Why It's "Decoder-Only" (Causal Masking)</p>
+<div class="mermaid">
+flowchart LR
+    T1["Token 1"] --> A1["Attends to: Token 1"]
+    T2["Token 2"] --> A2["Attends to: Token 1, 2"]
+    T3["Token 3"] --> A3["Attends to: Token 1, 2, 3"]
+    T4["Token 4"] --> A4["Attends to: Token 1, 2, 3, 4"]
+</div>
+<p>Unlike BERT's bidirectional attention, GPT masks out future tokens so each position can only see itself and everything before it &mdash; this causal constraint is what makes autoregressive, left-to-right generation possible.</p>
+
+<p class="diagram-title">Training GPT vs. Generating Text with GPT</p>
+<div class="mermaid">
+flowchart TD
+    subgraph Training["Training (one pass, parallel)"]
+    TA["Full Text Sequence"] --> TB["Run Through All Transformer Blocks Once"]
+    TB --> TC["Predict Next Token at Every Position Simultaneously"]
+    TC --> TD["Compare to Actual Next Tokens via Cross-Entropy Loss"]
+    TD --> TE["Backpropagate & Update Weights"]
+    end
+
+    subgraph Generation["Text Generation (autoregressive, sequential)"]
+    GA["Prompt"] --> GB["Prefill: Compute & Cache K/V for Prompt Tokens"]
+    GB --> GC["Predict Next Token"]
+    GC --> GD["Append Token to Sequence"]
+    GD --> GE["Reuse KV Cache + New Token"]
+    GE --> GC
+    end
+</div>
+
+<p>How the pieces map to GPT specifically:</p>
+<ul>
+<li><strong>Tokenizer:</strong> Subword tokenization (e.g., byte-pair encoding) converts text into token IDs.</li>
+<li><strong>Embedding layer:</strong> Token embeddings + positional embeddings give each token a position-aware vector.</li>
+<li><strong>Stacked decoder blocks:</strong> Each block = causal multi-head self-attention &rarr; residual + layer norm &rarr; feed-forward network &rarr; residual + layer norm. GPT-family models simply stack many of these (more blocks/parameters = larger GPT variants).</li>
+<li><strong>Causal masking:</strong> Ensures token <em>N</em> only attends to tokens <em>1...N</em>, enabling autoregressive generation.</li>
+<li><strong>Output head:</strong> Final hidden states are projected back to vocabulary size and passed through softmax to get next-token probabilities.</li>
+<li><strong>Training objective:</strong> Cross-entropy loss on next-token prediction, computed in parallel across the whole sequence.</li>
+<li><strong>Inference:</strong> Prefill the prompt once, then generate one token at a time, reusing the KV cache so each new token doesn't require recomputing attention over the entire history.</li>
+</ul>
+
+<p><strong>In short:</strong> GPT = tokenizer + embeddings &rarr; N stacked causal (masked) transformer decoder blocks &rarr; output projection to vocabulary &mdash; trained with next-token cross-entropy loss, and run at inference time autoregressively with KV caching for efficiency. Every concept from this session (tokenization, embeddings, self-attention, multi-head attention, transformer blocks, training vs. inference, KV caching) is a direct component of that pipeline.</p>
+</div>
+
+<hr>
+
+<div class="section" style="border-left: 5px solid #4361ee;">
+<h2>Key Takeaways: What You Should Know After This Session</h2>
+<p>After completing Day 2, you should be able to confidently explain and reason about the following:</p>
+
+<ul>
+<li><strong>Judgment over hype:</strong> Not every problem needs a large language model &mdash; know when a traditional ML model or simpler neural network is the better trade-off.</li>
+<li><strong>Historical context:</strong> Trace the evolution from n-grams &rarr; RNNs &rarr; LSTM/GRU &rarr; seq2seq with attention &rarr; transformers, and explain <em>why</em> each step was needed (vocabulary explosion, fading memory, sequential bottlenecks).</li>
+<li><strong>Core transformer insight:</strong> Transformers keep attention but remove recurrence, enabling parallel processing and direct long-range token connections.</li>
+<li><strong>End-to-end pipeline:</strong> Describe the flow from raw text &rarr; tokenization &rarr; embeddings &rarr; attention-based contextualization &rarr; next-token prediction.</li>
+<li><strong>Self-supervised learning:</strong> Explain how models create their own labels from raw text and why cross-entropy loss (a classification loss) applies to next-token prediction over the vocabulary.</li>
+<li><strong>Tokenization trade-offs:</strong> Compare word-level, character-level, and subword tokenization, and explain why subword tokenization is the modern standard.</li>
+<li><strong>Embeddings:</strong> Explain how tokens become dense vectors, why embeddings cluster semantically similar concepts, and why positional information must be added explicitly.</li>
+<li><strong>Self-attention mechanics:</strong> Walk through Query/Key/Value, dot-product similarity, softmax normalization, and weighted aggregation &mdash; and why this captures long-range dependencies efficiently on GPUs.</li>
+<li><strong>Multi-head attention:</strong> Explain why multiple heads are used and how different heads emergently specialize (e.g., syntax, punctuation, context).</li>
+<li><strong>Transformer block anatomy:</strong> Identify all components &mdash; embeddings, positional encoding, multi-head attention, residual connections, layer norm, and feed-forward layers &mdash; and how stacking blocks builds model depth.</li>
+<li><strong>Training vs. inference:</strong> Contrast parallel training (whole sequence, cross-entropy loss) with sequential inference (prefill + one-token-at-a-time decoding), and why inference is the costlier runtime path.</li>
+<li><strong>KV caching:</strong> Explain why caching keys/values avoids redundant recomputation and why longer contexts increase memory requirements.</li>
+<li><strong>Encoder vs. decoder:</strong> Distinguish bidirectional, masked-token encoders (e.g., BERT, used for understanding/classification) from causal, next-token decoders (e.g., GPT, used for generation) &mdash; while recognizing both share the same transformer building blocks.</li>
+<li><strong>Practical skills:</strong> Comfortably tokenize text, generate embeddings, visualize attention, and compare transformer-based representations against TF-IDF for a downstream classification task, including the accuracy/latency/cost trade-offs involved.</li>
+</ul>
+
+<p><strong>Bottom line:</strong> Everything in modern transformer-based LLMs &mdash; from BERT to GPT &mdash; reduces to <em>next-token (or masked-token) prediction</em>, learned via self-attention over token embeddings, stacked into deep blocks, and optimized differently for training (parallel) versus inference (sequential, cache-assisted).</p>
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+
+</body>
+</html>

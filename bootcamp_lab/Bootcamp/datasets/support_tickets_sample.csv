@@ -1,0 +1,41 @@
+customer_message,category,intent
+correct details on gold account,ACCOUNT,edit_account
+would it be possible to open a {{Account Type}} account for my daughter?,ACCOUNT,create_account
+i aint registered i have to open a standard account with you,ACCOUNT,create_account
+how can I retrieve the PIN of my profile?,ACCOUNT,recover_password
+Ineed assistance to see the withdrawal charges,CANCEL,check_cancellation_fee
+I don't know how I could see the early termination penalties,CANCEL,check_cancellation_fee
+I do not know how I can see the early termination penalty,CANCEL,check_cancellation_fee
+where to see the early termination charges?,CANCEL,check_cancellation_fee
+can you help me speaking with an assistant?,CONTACT,contact_human_agent
+can uhelp me talk to a live agent,CONTACT,contact_human_agent
+can I chat with a live agent?,CONTACT,contact_human_agent
+"I need to talk with customer support, how todo it?",CONTACT,contact_customer_service
+can you show me how soon can I expect my parcel?,DELIVERY,delivery_period
+can you help em check when will my article arrive?,DELIVERY,delivery_period
+help me see what shipping methods are there,DELIVERY,delivery_options
+I need help checking what bloody delivery methods are there,DELIVERY,delivery_options
+"I need to leave a comment for your services, how to do it?",FEEDBACK,review
+ya have a section to send a comment for ur services,FEEDBACK,review
+I do not know how I can write an opinion about a product,FEEDBACK,review
+where to lodge a customer reclamation?,FEEDBACK,complaint
+mail em the bill #37777,INVOICE,get_invoice
+download bills from {{Person Name}},INVOICE,get_invoice
+i do not know what to do to get my invoice from {{Person Name}},INVOICE,get_invoice
+see bill #00108,INVOICE,check_invoice
+I have problems with canceling purchase {{Order Number}},ORDER,cancel_order
+wanna check purchase {{Order Number}} status,ORDER,track_order
+i want herlp to update order {{Order Number}},ORDER,change_order
+assistance to shop a few of your item,ORDER,place_order
+help me notifying of problems with online payments,PAYMENT,payment_issue
+assistance with payment,PAYMENT,payment_issue
+I do not know how to infgorm of payment problems,PAYMENT,payment_issue
+"I need t see the accepted payment options, will you help me?",PAYMENT,check_payment_methods
+i cant track my reimbursement,REFUND,track_refund
+I do not know how to request a refund of my money,REFUND,get_refund
+want help obtaining reimbursements ofmy money,REFUND,get_refund
+I want assistance to see your money back policy,REFUND,check_refund_policy
+assistance to set my new shipping address up,SHIPPING,set_up_shipping_address
+need assistance setting up a shipping address,SHIPPING,set_up_shipping_address
+there is a problem submitting a new shipping address,SHIPPING,set_up_shipping_address
+I am trying to edit the delivery adress,SHIPPING,change_shipping_address

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capstone Project Proposal for Leadership</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .page {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(90deg, #0f172a 0%, #1d4ed8 100%);
+      color: white;
+      padding: 32px 40px;
+    }
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    .header p {
+      margin: 0;
+      font-size: 16px;
+      opacity: 0.95;
+    }
+    .content {
+      padding: 32px 40px 40px;
+    }
+    .section {
+      margin-bottom: 24px;
+      padding: 18px 20px;
+      border: 1px solid #e2e8f0;
+      border-left: 6px solid #2563eb;
+      border-radius: 10px;
+      background: #fbfdff;
+    }
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #1e3a8a;
+    }
+    .label {
+      font-weight: 700;
+      color: #334155;
+    }
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .kicker {
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>Capstone Project Proposal</h1>
+      <p>Executive-ready concept for improving AI-assisted intake, retrieval, and validation workflows.</p>
+    </div>
+    <div class="content">
+      <div class="section">
+        <div class="kicker">Strategic Initiative</div>
+        <h2>Module 1: Strategic Context Engineering &amp; Hybrid RAG</h2>
+        <p><span class="label">Objective:</span> Build an intake routing system that transforms multi-source inputs such as web content, transcripts, notes, and knowledge base information into a structured schema before they are processed by the model.</p>
+        <p><span class="label">Value:</span> This improves data quality, traceability, and downstream decision-making by ensuring that every input is categorized, contextualized, and ready for retrieval.</p>
+        <p><span class="label">Quality Mechanism:</span> Implement a metadata-driven chunking strategy that tags each information unit with <strong>Source Origin</strong> and <strong>Timestamp</strong>, enabling lineage, freshness awareness, and better governance.</p>
+      </div>
+
+      <div class="section">
+        <div class="kicker">Performance &amp; Efficiency</div>
+        <h2>Module 2: Inference &amp; Cache Optimization</h2>
+        <p><span class="label">Objective:</span> Improve system efficiency by organizing information in a way that maximizes prompt caching and reduces unnecessary context overhead.</p>
+        <p><span class="label">Value:</span> This lowers latency, improves response speed, and ensures the system uses context window space more effectively.</p>
+        <p><span class="label">Quality Mechanism:</span> Create a two-stage reranking and compression pipeline. The first stage removes redundancy, and the second stage orders content from most stable to most dynamic to improve caching and reduce time-to-first-token.</p>
+      </div>
+
+      <div class="section">
+        <div class="kicker">Governance &amp; Risk Control</div>
+        <h2>Module 3: Alignment, Automated Grading, &amp; Guardrails</h2>
+        <p><span class="label">Objective:</span> Establish a formal validation gate so only high-confidence, trustworthy outputs reach downstream systems such as Dynamics 365.</p>
+        <p><span class="label">Value:</span> This reduces hallucinations, improves factual consistency, and provides a measurable quality standard for deployment.</p>
+        <p><span class="label">Quality Mechanism:</span> Implement an automated judge pipeline with two key checks:</p>
+        <ul>
+          <li><strong>Faithfulness:</strong> Ensure claims are supported by source material.</li>
+          <li><strong>Contradiction Resolution:</strong> Resolve conflicts using the most reliable source when information disagrees.</li>
+        </ul>
+        <p>To validate impact, create a synthetic benchmark of complex lead scenarios and measure improvements using Context Recall and Answer Relevance.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

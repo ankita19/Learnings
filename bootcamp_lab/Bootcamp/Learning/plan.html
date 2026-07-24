@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Upskilling Program Plan</title>
+  <style>
+    :root {
+      --bg: #f5f8ff;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #5f6b7a;
+      --accent: #1d4ed8;
+      --accent-2: #0f766e;
+      --border: #dfe7f5;
+      --pill: #e8f0ff;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .hero, .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: 0 10px 28px rgba(23, 32, 51, 0.06);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 1.9rem;
+      color: var(--accent);
+      line-height: 1.25;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 860px;
+    }
+
+    .pill {
+      display: inline-block;
+      background: var(--pill);
+      color: var(--accent);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      color: var(--accent-2);
+      font-size: 1.25rem;
+    }
+
+    .summary-box {
+      background: #f9fbff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 12px 0 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f3f7ff;
+      color: var(--accent);
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 8px 0 0;
+    }
+
+    li { margin-bottom: 7px; }
+
+    .phase-card {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent);
+      background: #fcfdff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .note {
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <span class="pill">Upskilling Program Plan</span>
+      <h1>AI Engineering and Applied ML Development Program</h1>
+      <p>A structured learning and capstone plan designed as a serious development rotation with strong mentorship, evaluation, and hiring integration.</p>
+    </div>
+
+    <div class="section">
+      <h2>Time Commitment &amp; Allocation</h2>
+      <div class="summary-box">
+        <strong>Expected Time Commitment:</strong> 20 hours per week<br />
+        <strong>Program Duration:</strong> approximately 13–14 weeks<br />
+        <strong>Total Effort:</strong> approximately 210+ hours
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Duration</th>
+            <th>Weekly Commitment</th>
+            <th>Total Hours</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Structured Learning</td>
+            <td>4 weeks</td>
+            <td>20 hrs/week</td>
+            <td>80 hrs</td>
+          </tr>
+          <tr>
+            <td>Capstone Development</td>
+            <td>6 weeks</td>
+            <td>20 hrs/week</td>
+            <td>120 hrs</td>
+          </tr>
+          <tr>
+            <td>Reviews &amp; Interviews</td>
+            <td>~1–2 weeks</td>
+            <td>Variable</td>
+            <td>~10–15 hrs</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">This program should be treated as a structured development rotation with meaningful manager support and protected capacity.</p>
+    </div>
+
+    <div class="section">
+      <h2>Program Structure</h2>
+
+      <div class="phase-card">
+        <h3>Phase 1: Structured Technical Foundation (Weeks 1–4)</h3>
+        <p>Focused, instructor-led sessions with hands-on implementation.</p>
+
+        <h4>Week 1 – ML &amp; Neural Foundations</h4>
+        <ul>
+          <li>Python data science basics: NumPy, pandas</li>
+          <li>Regression and classification</li>
+          <li>Metrics, train/test splits, overfitting and underfitting</li>
+          <li>Perceptrons, backpropagation, and losses</li>
+          <li>PyTorch training loops</li>
+          <li>Regularization fundamentals</li>
+          <li>Transformer foundations: tokenization, embeddings, attention</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <h4>Week 2 – LLM Fine-Tuning &amp; RAG</h4>
+        <ul>
+          <li>Dataset collection, cleaning, and formatting</li>
+          <li>Continued pretraining vs. SFT</li>
+          <li>PEFT: LoRA/QLoRA</li>
+          <li>Error analysis loops</li>
+          <li>Semantic search and vector DB basics</li>
+          <li>Context injection and hallucination mitigation</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <h4>Week 3 – Prompting &amp; Evaluation</h4>
+        <ul>
+          <li>Zero-shot vs. few-shot prompting</li>
+          <li>Reasoning-style prompting</li>
+          <li>Iteration frameworks</li>
+          <li>Evaluation frameworks and benchmarking</li>
+          <li>A/B and shadow testing</li>
+          <li>Reward modeling overview</li>
+          <li>RLHF overview and trade-offs</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <h4>Week 4 – Reinforcement Learning</h4>
+        <ul>
+          <li>RLHF concepts and trade-offs vs. supervised fine-tuning</li>
+          <li>Preference data collection and reward design principles</li>
+          <li>Common RL instability issues and failure modes</li>
+          <li>Designing automated graders using LLM-as-a-judge and rubric-based systems</li>
+          <li>Calibration, validation, and bias mitigation in grading models</li>
+          <li>Using graders to power iterative training and optimization loops</li>
+          <li>Offline vs. online RL and safe deployment strategies</li>
+          <li>Telemetry-driven reward iteration and continuous improvement</li>
+          <li>Determining when RL is appropriate vs. improving data, architecture, or evaluation design</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Phase 2: Capstone (Weeks 5–12)</h2>
+      <p>Each participant must complete a business-relevant AI capstone project.</p>
+      <ul>
+        <li>Define a business-relevant AI problem</li>
+        <li>Design an appropriate architecture: fine-tuning vs. RAG vs. hybrid</li>
+        <li>Implement an evaluation framework</li>
+        <li>Conduct structured error analysis</li>
+        <li>Iterate based on measurable metrics</li>
+        <li>Document trade-offs and limitations</li>
+        <li>Provide a production-readiness plan</li>
+      </ul>
+
+      <div class="summary-box">
+        <strong>Mentorship Model</strong>
+        <ul>
+          <li>Assigned paired mentor</li>
+          <li>Biweekly deep-dive reviews</li>
+          <li>Architecture reviews</li>
+          <li>Evaluation critique</li>
+          <li>Readiness assessment prior to hiring committee review</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Phase 3: Capstone Review &amp; Interview Process</h2>
+      <p>This program is tightly integrated with a Dedicated Hiring Committee.</p>
+
+      <h3>Step 1 – Capstone Review</h3>
+      <ul>
+        <li>Conducted by the Hiring Committee</li>
+        <li>Formal technical presentation</li>
+        <li>Architecture defense</li>
+        <li>Evaluation rigor review</li>
+        <li>Responsible AI considerations</li>
+        <li>Scalability and production trade-offs</li>
+      </ul>
+      <p><strong>Only candidates who pass capstone review move forward.</strong></p>
+    </div>
+
+    <div class="section">
+      <h2>Phase 4: Technical Interviews</h2>
+      <p>All interviews are conducted by members of the Hiring Committee.</p>
+      <ul>
+        <li>Round 1 – Breadth</li>
+        <li>Round 2 – Depth</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Final Step – Hiring Committee Vote</h2>
+      <ul>
+        <li>Coordinator submits final candidate package</li>
+        <li>Hiring Committee reviews capstone evaluation, interview performance, mentor feedback, and technical artifacts</li>
+        <li>Majority vote determines whether the candidate can proceed to role update</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Timeline</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Process</th>
+            <th>Dates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Candidate pre-selection and communication</td><td>March 1st week</td></tr>
+          <tr><td>Begin learning sessions</td><td>April 3rd week to April 13 to May 8</td></tr>
+          <tr><td>Capstone</td><td>May 11 to June 19</td></tr>
+          <tr><td>Interviews for capstone</td><td>Wrap up by July 1</td></tr>
+          <tr><td>Interviews for science breadth and depth</td><td>Complete by July 15</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

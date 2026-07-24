@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capstone Project Ideas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background: #f7f9fc;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    h1, h2, h3 {
+      color: #0f172a;
+    }
+    h1 {
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+    .module {
+      margin-bottom: 24px;
+      padding: 18px 20px;
+      border-left: 5px solid #2563eb;
+      background: #f8fbff;
+      border-radius: 8px;
+    }
+    .module h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    .meta {
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 10px;
+    }
+    ul {
+      margin: 8px 0 0 20px;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .highlight {
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Capstone Project Ideas</h1>
+    <p class="subtitle">A structured vision for building a high-quality, curriculum-aligned AI system.</p>
+
+    <div class="module">
+      <h3>Module 1: Strategic Context Engineering &amp; Hybrid RAG <a href="https://arxiv.org/html/2506.08938v1" target="_blank"></a>https://arxiv.org/html/2506.08938v1</a></h3>
+      <div class="meta">Syllabus Focus: Fine-Tuning &amp; RAG, Vector DBs, Hallucination Mitigation</div>
+      <p><span class="highlight">System Goal:</span> Build an intake router that maps multi-source inputs such as web content, transcripts, notes, and knowledge base documents into a structured schema before they reach the model.</p>
+      <p><span class="highlight">Quality Mechanism:</span> Implement a metadata-driven chunking strategy that tags every piece of information with <strong>Source Origin</strong> and <strong>Timestamp</strong>. This creates data lineage and helps the system understand where insights come from and how recent they are.</p>
+    </div>
+
+    <div class="module">
+      <h3>Module 2: Inference &amp; Cache Optimization</h3>
+      <div class="meta">Syllabus Focus: Pre- &amp; Post-Training Optimization, KV Cache, Distillation, Quantization</div>
+      <p><span class="highlight">System Goal:</span> Organize the information matrix to maximize prompt caching efficiency while minimizing context window bloat.</p>
+      <p><span class="highlight">Quality Mechanism:</span> Build a two-stage reranking and compression pipeline. Stage 1 uses a lightweight cross-encoder such as BGE-Reranker to remove redundant or duplicated content. Stage 2 applies structural prefix shielding by ordering data from most static to most dynamic to improve prompt caching hit rates and reduce time-to-first-token.</p>
+    </div>
+
+    <div class="module">
+      <h3>Module 3: Alignment, Automated Grading, &amp; Guardrails</h3>
+      <div class="meta">Syllabus Focus: RL &amp; Alignment, Evaluation &amp; Benchmarking</div>
+      <p><span class="highlight">System Goal:</span> Build a programmatic validation gate that acts as a quality control filter before data reaches Dynamics 365.</p>
+      <p><span class="highlight">Quality Mechanism:</span> Implement an automated judge pipeline.</p>
+      <ul>
+        <li><strong>Step 1:</strong> Use NLI models or small language models to check <strong>Faithfulness</strong> and <strong>Contradiction Resolution</strong>. For example, if the web says “hiring” but the transcript says “layoffs,” the transcript should take precedence.</li>
+        <li><strong>Step 2:</strong> Create a synthetic evaluation dataset of 50 complex lead scenarios with conflicting signals. Use metrics such as Context Recall and Answer Relevance through tools like Ragas or TruLens to prove the agent improves over a baseline web-search agent.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
