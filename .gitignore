@@ -1,6 +1,9 @@
 # Exclude large third-party reference content
 reference/claude-cookbooks/
 
+# Applied positions (job listings)
+applied_positions/
+
 # Python compiled artifacts
 **/__pycache__/
 *.pyc
