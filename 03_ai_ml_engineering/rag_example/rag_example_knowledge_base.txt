@@ -1,0 +1,52 @@
+Example Knowledge Base for RAG Demo
+
+Company Overview
+
+Acme Analytics is a fictional data analytics company that provides
+cloud-based tools for business intelligence, reporting, and machine
+learning experimentation.
+
+Products
+
+Acme Insight
+
+Acme Insight is a dashboard platform that allows teams to visualize
+metrics in real time. It supports SQL queries, scheduled reports, and
+alerting.
+
+Acme Predict
+
+Acme Predict is a machine learning toolkit that helps data scientists
+train and deploy predictive models using Python notebooks and managed
+infrastructure.
+
+Pricing Tiers
+
+Starter Plan: - Up to 5 users - Basic dashboards - Community support
+
+Professional Plan: - Up to 25 users - Advanced dashboards - Scheduled
+reports - Email support
+
+Enterprise Plan: - Unlimited users - Advanced security controls -
+Dedicated support - Custom integrations
+
+Support Policy
+
+Support requests are answered Monday through Friday during standard
+business hours. Enterprise customers receive priority response times.
+
+Data Security
+
+All customer data is encrypted in transit using TLS 1.2 or higher. Data
+at rest is encrypted using AES-256.
+
+Common Questions
+
+Q: Can I export dashboards? A: Yes. Dashboards can be exported as PDF or
+shared via a secure link.
+
+Q: Does Acme Predict support GPU training? A: Yes. GPU-enabled
+environments are available for enterprise customers.
+
+Q: Where is data stored? A: Data is stored in regional cloud
+infrastructure based on the customer’s selected deployment region.

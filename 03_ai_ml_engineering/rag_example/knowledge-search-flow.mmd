@@ -1,0 +1,54 @@
+flowchart TD
+    A[AgenticRag calls\nKnowledgeSearchTool\nwith a search query] --> B
+
+    B[KnowledgeSearchTool\nExtracts query string from\nthe LLM's tool call JSON]
+
+    B --> C[KnowledgeGenerator\n.KnowledgeSearchAsync]
+
+    C --> D[DocumentSearchProvider\n.SearchRelevantDocumentsAsync]
+
+    D --> E{Were documents\npre-supplied in the request?}
+
+    E -->|Yes — caller passed\nraw SearchContent| F[Skip search entirely\nUse the supplied content as-is\ne.g. pasted email body]
+
+    E -->|No — need to search| G[BuildSearchRequestAsync\nDecide which engine to use\nbased on SearchSource type]
+
+    G --> H{Which source\ntype?}
+
+    H -->|Dataverse KB\nknowledge articles| I[PromptService Search Engine\n📦 Microsoft internal service\nthat indexes & chunks\nD365 knowledge articles]
+
+    H -->|SharePoint| J[SharePoint Search Engine\nCalls SharePoint REST API]
+
+    H -->|UnifiedKM flag\nor custom| K[DVCopilot Search Engine\nCalls DVCopilot HTTP endpoint\non Dataverse]
+
+    H -->|Web fallback| L[Bing Search Engine\nCalls Bing Search API]
+
+    subgraph PromptService [PromptService — Primary Vector Store]
+        direction TB
+        I --> V1{UnifiedRAGSearch\nscenario?}
+        V1 -->|Yes| VEC[Generate Query Embedding\n\nCall Azure OpenAI CAPI\nwith UnifiedRAGEmbeddingModelName\nto get a float vector for the query]
+        VEC --> TP[Send to PromptService:\n- query text\n- embeddings float array\n- filters e.g. KB category\n- scenario name\n- model name]
+        V1 -->|No — keyword mode| KW[Send to PromptService:\n- query text only\n- no embeddings\n- scenario = KnowledgeSearch]
+        KW --> TP
+    end
+
+    TP --> RESP[PromptService returns\nranked document chunks]
+
+    J --> RESP2[SharePoint returns snippets]
+    K --> RESP3[DVCopilot returns\nDataverse record chunks]
+    L --> RESP4[Bing returns web articles]
+
+    RESP --> MERGE[Merge chunks by URL\ndeduplicate same document\nappearing in multiple chunks]
+    RESP2 --> MERGE
+    RESP3 --> MERGE
+    RESP4 --> MERGE
+
+    MERGE --> FILTER[KnowledgeResultProcessor\nFilter by relevance threshold\nDvCopilotSearchThreshold config]
+
+    FILTER --> CHUNKS[List of DocumentChunks returned\nEach chunk has:\n- Extract = the actual text\n- Title, URL\n- RelevanceScore float\n- VectorScore float\n- ChunkId = new GUID per call\n- ParentRecordId = source doc ID]
+
+    CHUNKS --> TOOL[KnowledgeSearchTool\nSerializes to JSON\nreturns as ToolResult]
+
+    TOOL --> LLM[Added to LLM message history\nfor next iteration\nLLM reads chunk extracts\nto form its answer]
+
+    TOOL --> CIT[CitationProcessor\nMatches chunk references\nto source URLs/titles\nfor the final response]

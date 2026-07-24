@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QEA Model Comparison Report</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f5f6f8; color: #333; margin: 0; padding: 20px; line-height: 1.5;
+}
+.container {
+    max-width: 1400px; margin: 0 auto; background: #fff;
+    padding: 30px 40px 40px; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+h1 { color: #1a2332; border-bottom: 3px solid #3498db; padding-bottom: 12px; font-size: 1.8em; }
+nav {
+    background: #2c3e50; padding: 10px 16px; border-radius: 6px;
+    margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 4px 16px;
+}
+nav a { color: #ecf0f1; text-decoration: none; font-size: 13px; padding: 2px 0; }
+nav a:hover { color: #3498db; text-decoration: underline; }
+h2 {
+    color: #1a2332; margin-top: 40px; padding: 10px 14px;
+    background: #eaf2f8; border-left: 4px solid #3498db;
+    border-radius: 0 4px 4px 0; font-size: 1.3em;
+}
+h3 { color: #555; margin-top: 28px; padding-bottom: 6px; border-bottom: 1px solid #ddd; font-size: 1.05em; }
+.table-wrap { overflow-x: auto; margin: 12px 0; }
+table.data-table { border-collapse: collapse; width: 100%; font-size: 13px; white-space: nowrap; }
+table.data-table th {
+    background: #2c3e50; color: #fff; padding: 9px 12px;
+    text-align: left; font-weight: 600;
+}
+table.data-table td { padding: 7px 12px; border-bottom: 1px solid #e0e0e0; }
+table.data-table tr:nth-child(even) { background: #f8f9fa; }
+table.data-table tr:hover { background: #e8f4fd; }
+table.data-table th.col-highlight { background: #1a5276; }
+table.data-table td.col-highlight { background: #eaf2f8; font-weight: 600; }
+table.data-table tr:nth-child(even) td.col-highlight { background: #d4e6f1; }
+table.data-table td.cell-best { background: #d5f5e3; font-weight: 700; color: #1e8449; }
+table.data-table tr:hover td.col-highlight { background: #d6eaf8; }
+table.data-table tr.row-highlight td { background: #eaf2f8; font-weight: 600; border-bottom: 2px solid #3498db; }
+table.data-table tr.row-highlight:hover td { background: #d6eaf8; }
+p.metric {
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 13px; color: #444; margin: 3px 0; padding: 2px 0;
+}
+.timestamp {
+    color: #999; font-size: 12px; text-align: right;
+    margin-top: 40px; border-top: 1px solid #eee; padding-top: 10px;
+}
+.chart-wrap {
+    margin: 20px 0; padding: 16px; background: #fafbfc;
+    border: 1px solid #e0e0e0; border-radius: 6px;
+}
+.chart-title {
+    font-size: 14px; font-weight: 600; color: #2c3e50;
+    margin: 0 0 10px 0;
+}
+.chart-note {
+    font-size: 12px; color: #888; margin-top: 8px; font-style: italic;
+}
+.narrative {
+    font-family: Georgia, "Times New Roman", serif; font-size: 15px;
+    line-height: 1.7; color: #333; margin: 14px 0; padding: 0 4px;
+}
+.narrative strong { color: #1a2332; }
+.section-explainer {
+    border-left: 4px solid #3498db; background: #f0f7fc;
+    padding: 16px 20px; margin: 18px 0; border-radius: 0 6px 6px 0;
+}
+.section-explainer h4 { margin: 0 0 10px; color: #2c3e50; font-size: 15px; font-weight: 600; }
+.section-explainer p { margin: 4px 0; font-size: 13px; line-height: 1.6; }
+.metric-definitions { margin: 10px 0 0; padding: 0; }
+.metric-definitions dt { font-weight: 600; color: #2c3e50; margin-top: 8px; font-size: 13px; }
+.metric-definitions dd { margin: 2px 0 0 20px; font-size: 13px; color: #444; line-height: 1.5; }
+.section-explainer.technical {
+    border-left-color: #8e44ad; background: #f5f0fa;
+}
+.section-explainer.technical h4 { color: #6c3483; }
+.case-example {
+    border-left: 4px solid #f39c12; background: #fef9e7;
+    padding: 14px 18px; margin: 14px 0; border-radius: 0 6px 6px 0;
+}
+.case-example .case-title { font-weight: 600; color: #7d6608; margin: 0 0 6px; font-size: 14px; }
+.case-example .case-label { display: inline-block; background: #f39c12; color: #fff; padding: 1px 8px; border-radius: 3px; font-size: 11px; margin-left: 8px; }
+.case-example .case-detail { margin: 3px 0; font-size: 13px; color: #555; }
+.exec-summary {
+    border: 2px solid #f1c40f; background: #fefce8; padding: 20px 24px;
+    margin: 20px 0 30px; border-radius: 8px;
+}
+.exec-summary h3 { margin: 0 0 12px; color: #7d6608; font-size: 16px; }
+.exec-summary p { margin: 6px 0; font-size: 14px; line-height: 1.6; color: #333; }
+.exec-summary strong { color: #1a2332; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="container">
+<h1>QEA Model Comparison Report</h1>
+<nav><a href="#section-1-accuracy--behavior">Section 1 Accuracy  Behavior</a> <a href="#section-2-quality-checks">Section 2 Quality Checks</a> <a href="#section-3-operational">Section 3 Operational</a> <a href="#section-4-decision-matrix">Section 4 Decision Matrix</a></nav>
+<h2 id="section-1-accuracy--behavior">Section 1: Accuracy &amp; Behavior</h2>
+<p class="metric">Ground truth comparison across 295 prod cases with human evaluator labels.</p>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>Exact Match</dt><dd>Every label must match perfectly. Strict — even selecting 2 of 3 correct labels counts as a miss.</dd><dt>Agreement</dt><dd>Did the model and human evaluator agree on the basic call: On Track vs. deficiency?</dd><dt>Catch Rate (vs Human)</dt><dd>Of deficiencies flagged by humans, what % did the model also catch? QEA&#x27;s #1 metric.</dd><dt>Human Alignment</dt><dd>Of deficiencies flagged by the model, what % did humans agree with?</dd><dt>Confusion Matrix</dt><dd>The four outcomes: Defects Caught (both agree deficiency), Over-flagged (model only), Missed (human only), On Track Agreed (both agree On Track).</dd><dt>Behavioral Patterns</dt><dd>Strictness bias, verbosity, option selection patterns, inter-model agreement, and hardest cases — shown as subsections below accuracy.</dd><dt>Robustness</dt><dd>Agreement rates sliced by metadata dimensions (size bucket, source category, context window, PM patterns) — reveals blind spots across case types.</dd></dl></div>
+<div class="section-explainer technical"><h4>How are these metrics calculated?</h4><dl class="metric-definitions"><dt>Exact Match</dt><dd>GT labels == predicted labels (string identity after sorting and semicolon-joining).</dd><dt>Agreement</dt><dd>is_on_track(GT) == is_on_track(prediction). Includes ALL cases (On Track + deficiency).</dd><dt>Catch Rate (vs Human)</dt><dd>Caught / (Caught + Missed). Only cases where humans found a deficiency — On Track cases excluded.</dd><dt>Human Alignment</dt><dd>Caught / (Caught + Over-flagged). Only cases the model flagged. Low alignment may be over-flagging OR the model catching issues humans missed.</dd><dt>Confusion Matrix</dt><dd>Defects Caught = GT deficiency &amp; model deficiency (TP). Over-flagged = GT On Track &amp; model deficiency (FP). Missed = GT deficiency &amp; model On Track (FN). On Track Agreed = both On Track (TN).</dd><dt>Behavioral Patterns</dt><dd>Strictness bias = model deficiency rate minus human base rate per category. Verbosity = word count of reason fields. Inter-model agreement = per case × category binary consensus across all models.</dd><dt>Robustness</dt><dd>Agreement is recomputed for each subset of cases (filtered by size, source, category, PM patterns, or input character count).</dd></dl></div>
+<h3>Overall Summary</h3>
+<p class="metric">Counts — Defects Caught + Over-flagged + Missed + On Track Agreed = Observations · Human Flagged = Defects Caught + Missed · Model Flagged = Defects Caught + Over-flagged</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Observations</th>
+      <th>Defects Caught</th>
+      <th>Over-flagged</th>
+      <th>Missed</th>
+      <th>On Track Agreed</th>
+      <th>Human Flagged</th>
+      <th>Model Flagged</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>1180</td>
+      <td>341</td>
+      <td>647</td>
+      <td>34</td>
+      <td>158</td>
+      <td>375</td>
+      <td>988</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>1180</td>
+      <td>329</td>
+      <td>694</td>
+      <td>46</td>
+      <td>111</td>
+      <td>375</td>
+      <td>1023</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>1180</td>
+      <td>290</td>
+      <td>549</td>
+      <td>85</td>
+      <td>256</td>
+      <td>375</td>
+      <td>839</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>1180</td>
+      <td>253</td>
+      <td>440</td>
+      <td>122</td>
+      <td>365</td>
+      <td>375</td>
+      <td>693</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>1148</td>
+      <td>216</td>
+      <td>420</td>
+      <td>145</td>
+      <td>367</td>
+      <td>361</td>
+      <td>636</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Rates — Catch Rate = Defects Caught/(Defects Caught+Missed) · Agreement = (Defects Caught+On Track Agreed)/Observations · Human Alignment = Defects Caught/(Defects Caught+Over-flagged) · Balance = F1(Catch, Alignment)</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th class="col-highlight">Catch Rate</th><th>Agreement</th><th class="col-highlight">Adj. Agreement</th><th>Human Alignment</th><th>Balance Score</th><th class="col-highlight">Adj. Balance</th><th>Exact Match</th></tr></thead><tbody><tr><td>GPT-5 Chat</td><td class="col-highlight cell-best">90.9%</td><td>42.3%</td><td class="col-highlight">59.7%</td><td>34.5%</td><td>50.0%</td><td class="col-highlight cell-best">69.6%</td><td>14.1%</td></tr><tr><td>Claude Sonnet 4.6</td><td class="col-highlight">87.7%</td><td>37.3%</td><td class="col-highlight">55.8%</td><td>32.2%</td><td>47.1%</td><td class="col-highlight">67.8%</td><td>9.6%</td></tr><tr><td>Claude Opus 4.6</td><td class="col-highlight">77.3%</td><td>46.3%</td><td class="col-highlight">62.9%</td><td>34.6%</td><td>47.8%</td><td class="col-highlight">68.9%</td><td>22.2%</td></tr><tr><td>GPT-4.1</td><td class="col-highlight">67.5%</td><td>52.4%</td><td class="col-highlight cell-best">65.5%</td><td>36.5%</td><td>47.4%</td><td class="col-highlight">66.7%</td><td>31.4%</td></tr><tr><td>GPT-5 Reasoning</td><td class="col-highlight">59.8%</td><td>50.8%</td><td class="col-highlight">64.7%</td><td>34.0%</td><td>43.3%</td><td class="col-highlight">65.0%</td><td>32.8%</td></tr></tbody></table></div>
+<div class="chart-wrap"><p class="chart-title">Outcome Composition per Model</p><canvas id="chart_outcome_composition" style="max-height:420px"></canvas><p class="chart-note">Green (Defects Caught) + Blue (On Track Agreed) = Agreement. Orange (Over-flagged) = false positives. Red (Missed) = false negatives.</p><script>(function(){var ctx=document.getElementById('chart_outcome_composition').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["GPT-5 Chat", "Claude Sonnet 4.6", "Claude Opus 4.6", "GPT-4.1", "GPT-5 Reasoning"], "datasets": [{"label": "Defects Caught", "data": [28.9, 27.9, 24.6, 21.4, 18.8], "backgroundColor": "rgba(46, 204, 113, 0.75)", "borderWidth": 1}, {"label": "Over-flagged", "data": [54.8, 58.8, 46.5, 37.3, 36.6], "backgroundColor": "rgba(243, 156, 18, 0.75)", "borderWidth": 1}, {"label": "Missed", "data": [2.9, 3.9, 7.2, 10.3, 12.6], "backgroundColor": "rgba(231, 76, 60, 0.75)", "borderWidth": 1}, {"label": "On Track Agreed", "data": [13.4, 9.4, 21.7, 30.9, 32.0], "backgroundColor": "rgba(52, 152, 219, 0.75)", "borderWidth": 1}]}, "options": {"indexAxis": "y", "responsive": true, "plugins": {"title": {"display": true, "text": "Outcome Composition (% of Observations)"}, "tooltip": {"callbacks": {"label": function(ctx) {var counts = {"tp": [341, 329, 290, 253, 216], "fp": [647, 694, 549, 440, 420], "fn": [34, 46, 85, 122, 145], "tn": [158, 111, 256, 365, 367]};var keys = ["tp", "fp", "fn", "tn"];var key = keys[ctx.datasetIndex];var n = counts[key][ctx.dataIndex];return ctx.dataset.label + ': ' + ctx.raw + '% (' + n + ' cases)';}}}}, "scales": {"x": {"stacked": true, "beginAtZero": true, "max": 100, "title": {"display": true, "text": "%"}}, "y": {"stacked": true}}}});})()</script></div>
+<div class="chart-wrap"><p class="chart-title">Catch Rate by Model x Category</p><canvas id="chart_recall" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_recall').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["Communicate Effectively", "Accountable", "Resourceful", "Empathy"], "datasets": [{"label": "Claude Opus 4.6", "data": [93.9, 81.2, 80.0, 58.0], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 1}, {"label": "Claude Sonnet 4.6", "data": [98.0, 85.0, 92.9, 76.8], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 1}, {"label": "GPT-4.1", "data": [74.5, 63.7, 67.1, 64.3], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 1}, {"label": "GPT-5 Reasoning", "data": [91.6, 50.0, 63.0, 36.4], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 1}, {"label": "GPT-5 Chat", "data": [94.9, 91.2, 92.9, 85.7], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 1}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Catch Rate by Category (%)"}}, "scales": {"y": {"beginAtZero": true, "max": 100, "title": {"display": true, "text": "Catch Rate %"}}}}});})()</script></div>
+<div class="chart-wrap"><p class="chart-title">Agreement by Model x Category</p><canvas id="chart_concordance" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_concordance').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["Communicate Effectively", "Accountable", "Resourceful", "Empathy"], "datasets": [{"label": "Claude Opus 4.6", "data": [35.3, 50.2, 50.8, 48.8], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 1}, {"label": "Claude Sonnet 4.6", "data": [33.6, 40.3, 32.2, 43.1], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 1}, {"label": "GPT-4.1", "data": [43.1, 55.3, 56.6, 54.6], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 1}, {"label": "GPT-5 Reasoning", "data": [32.8, 61.0, 56.8, 52.6], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 1}, {"label": "GPT-5 Chat", "data": [39.3, 41.7, 41.0, 47.1], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 1}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Agreement by Category (%)"}}, "scales": {"y": {"beginAtZero": true, "max": 100, "title": {"display": true, "text": "Agreement %"}}}}});})()</script></div>
+<h3>Adjusted Accuracy (LLM Judge)</h3>
+<p class="metric">An independent LLM judge reviewed a stratified sample of over-flagged cases (model flagged deficiency, human said On Track) to determine if the model&#x27;s flag was supported by case evidence. Supported flags are reclassified FP → TP, raising agreement.</p>
+<p class="metric">Over-flagged = total false positives · Judged = sampled for review · Supported = judge ruled the flag was evidence-backed (% of judged)</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Agreement</th>
+      <th>Adjusted</th>
+      <th>Delta</th>
+      <th>Over-flagged</th>
+      <th>Judged</th>
+      <th>Supported</th>
+      <th>Adj. Balance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>46.3%</td>
+      <td>62.9%</td>
+      <td>+16.6pp</td>
+      <td>549</td>
+      <td>208</td>
+      <td>196 (94.2%)</td>
+      <td>68.9%</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>37.3%</td>
+      <td>55.8%</td>
+      <td>+18.6pp</td>
+      <td>694</td>
+      <td>231</td>
+      <td>219 (94.8%)</td>
+      <td>67.8%</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>52.4%</td>
+      <td>65.5%</td>
+      <td>+13.1pp</td>
+      <td>440</td>
+      <td>166</td>
+      <td>155 (93.4%)</td>
+      <td>66.7%</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>50.8%</td>
+      <td>64.7%</td>
+      <td>+13.9pp</td>
+      <td>420</td>
+      <td>170</td>
+      <td>160 (94.1%)</td>
+      <td>65.0%</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>42.3%</td>
+      <td>59.7%</td>
+      <td>+17.4pp</td>
+      <td>647</td>
+      <td>218</td>
+      <td>205 (94.0%)</td>
+      <td>69.6%</td>
+    </tr>
+  </tbody>
+</table></div>
+<div class="chart-wrap"><p class="chart-title">Raw vs Adjusted Agreement</p><canvas id="chart_adjusted_agreement" style="max-height:420px"></canvas><p class="chart-note">Green extension shows improvement from LLM judge reclassification of supported over-flags.</p><script>(function(){var ctx=document.getElementById('chart_adjusted_agreement').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["Claude Opus 4.6", "Claude Sonnet 4.6", "GPT-4.1", "GPT-5 Reasoning", "GPT-5 Chat"], "datasets": [{"label": "Raw Agreement", "data": [46.3, 37.3, 52.4, 50.8, 42.3], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 1}, {"label": "Judge Improvement", "data": [16.6, 18.5, 13.1, 13.9, 17.4], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 1}]}, "options": {"indexAxis": "y", "responsive": true, "plugins": {"title": {"display": true, "text": "Agreement: Raw + Judge Improvement (%)"}, "tooltip": {"callbacks": {"label": function(ctx) {var raw = [46.3, 37.3, 52.4, 50.8, 42.3];var delta = [16.6, 18.5, 13.1, 13.9, 17.4];var adj = [62.9, 55.8, 65.5, 64.7, 59.7];var i = ctx.dataIndex;if (ctx.datasetIndex === 0) return 'Raw: ' + raw[i] + '%';return '+' + delta[i] + ' pp (total: ' + adj[i] + '%)';}}}}, "scales": {"x": {"stacked": true, "beginAtZero": true, "max": 100, "title": {"display": true, "text": "Agreement %"}}, "y": {"stacked": true}}}});})()</script></div>
+<h3>Communicate Effectively</h3>
+<p class="metric">Counts — Defects Caught + Over-flagged + Missed + On Track Agreed = N</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>N</th>
+      <th>Defects Caught</th>
+      <th>Over-flagged</th>
+      <th>Missed</th>
+      <th>On Track Agreed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>295</td>
+      <td>96</td>
+      <td>194</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>295</td>
+      <td>93</td>
+      <td>174</td>
+      <td>5</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>295</td>
+      <td>92</td>
+      <td>185</td>
+      <td>6</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>287</td>
+      <td>87</td>
+      <td>185</td>
+      <td>8</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>295</td>
+      <td>73</td>
+      <td>143</td>
+      <td>25</td>
+      <td>54</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Rates — Catch Rate = Defects Caught/(Defects Caught+Missed) · Agreement = (Defects Caught+On Track Agreed)/N · Human Alignment = Defects Caught/(Defects Caught+Over-flagged) · Balance = F1(Catch, Alignment)</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th class="col-highlight">Catch Rate</th><th>Agreement</th><th class="col-highlight">Adj. Agreement</th><th>Human Alignment</th><th>Balance Score</th><th class="col-highlight">Adj. Balance</th><th>Exact Match</th></tr></thead><tbody><tr><td>Claude Sonnet 4.6</td><td class="col-highlight cell-best">98.0%</td><td>33.6%</td><td class="col-highlight">57.3%</td><td>33.1%</td><td>49.5%</td><td class="col-highlight">72.5%</td><td>1.0%</td></tr><tr><td>GPT-5 Chat</td><td class="col-highlight">94.9%</td><td>39.3%</td><td class="col-highlight cell-best">61.4%</td><td>34.8%</td><td>51.0%</td><td class="col-highlight cell-best">73.5%</td><td>8.1%</td></tr><tr><td>Claude Opus 4.6</td><td class="col-highlight">93.9%</td><td>35.3%</td><td class="col-highlight">59.0%</td><td>33.2%</td><td>49.1%</td><td class="col-highlight">72.8%</td><td>4.1%</td></tr><tr><td>GPT-5 Reasoning</td><td class="col-highlight">91.6%</td><td>32.8%</td><td class="col-highlight">57.1%</td><td>32.0%</td><td>47.4%</td><td class="col-highlight">71.9%</td><td>2.4%</td></tr><tr><td>GPT-4.1</td><td class="col-highlight">74.5%</td><td>43.1%</td><td class="col-highlight">61.0%</td><td>33.8%</td><td>46.5%</td><td class="col-highlight">68.7%</td><td>18.3%</td></tr></tbody></table></div>
+<h3>Accountable</h3>
+<p class="metric">Counts — Defects Caught + Over-flagged + Missed + On Track Agreed = N</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>N</th>
+      <th>Defects Caught</th>
+      <th>Over-flagged</th>
+      <th>Missed</th>
+      <th>On Track Agreed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>295</td>
+      <td>73</td>
+      <td>165</td>
+      <td>7</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>295</td>
+      <td>68</td>
+      <td>164</td>
+      <td>12</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>295</td>
+      <td>65</td>
+      <td>132</td>
+      <td>15</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>295</td>
+      <td>51</td>
+      <td>103</td>
+      <td>29</td>
+      <td>112</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>287</td>
+      <td>39</td>
+      <td>73</td>
+      <td>39</td>
+      <td>136</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Rates — Catch Rate = Defects Caught/(Defects Caught+Missed) · Agreement = (Defects Caught+On Track Agreed)/N · Human Alignment = Defects Caught/(Defects Caught+Over-flagged) · Balance = F1(Catch, Alignment)</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th class="col-highlight">Catch Rate</th><th>Agreement</th><th class="col-highlight">Adj. Agreement</th><th>Human Alignment</th><th>Balance Score</th><th class="col-highlight">Adj. Balance</th><th>Exact Match</th></tr></thead><tbody><tr><td>GPT-5 Chat</td><td class="col-highlight cell-best">91.2%</td><td>41.7%</td><td class="col-highlight">56.9%</td><td>30.7%</td><td>45.9%</td><td class="col-highlight">65.0%</td><td>18.0%</td></tr><tr><td>Claude Sonnet 4.6</td><td class="col-highlight">85.0%</td><td>40.3%</td><td class="col-highlight">56.9%</td><td>29.3%</td><td>43.6%</td><td class="col-highlight">64.8%</td><td>17.6%</td></tr><tr><td>Claude Opus 4.6</td><td class="col-highlight">81.2%</td><td>50.2%</td><td class="col-highlight">64.7%</td><td>33.0%</td><td>46.9%</td><td class="col-highlight cell-best">67.5%</td><td>29.2%</td></tr><tr><td>GPT-4.1</td><td class="col-highlight">63.7%</td><td>55.3%</td><td class="col-highlight">66.4%</td><td>33.1%</td><td>43.6%</td><td class="col-highlight">62.9%</td><td>39.0%</td></tr><tr><td>GPT-5 Reasoning</td><td class="col-highlight">50.0%</td><td>61.0%</td><td class="col-highlight cell-best">70.0%</td><td>34.8%</td><td>41.1%</td><td class="col-highlight">60.2%</td><td>48.8%</td></tr></tbody></table></div>
+<h3>Resourceful</h3>
+<p class="metric">Counts — Defects Caught + Over-flagged + Missed + On Track Agreed = N</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>N</th>
+      <th>Defects Caught</th>
+      <th>Over-flagged</th>
+      <th>Missed</th>
+      <th>On Track Agreed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>295</td>
+      <td>79</td>
+      <td>194</td>
+      <td>6</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>295</td>
+      <td>79</td>
+      <td>168</td>
+      <td>6</td>
+      <td>42</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>295</td>
+      <td>68</td>
+      <td>128</td>
+      <td>17</td>
+      <td>82</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>295</td>
+      <td>57</td>
+      <td>100</td>
+      <td>28</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>287</td>
+      <td>51</td>
+      <td>94</td>
+      <td>30</td>
+      <td>112</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Rates — Catch Rate = Defects Caught/(Defects Caught+Missed) · Agreement = (Defects Caught+On Track Agreed)/N · Human Alignment = Defects Caught/(Defects Caught+Over-flagged) · Balance = F1(Catch, Alignment)</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th class="col-highlight">Catch Rate</th><th>Agreement</th><th class="col-highlight">Adj. Agreement</th><th>Human Alignment</th><th>Balance Score</th><th class="col-highlight">Adj. Balance</th><th>Exact Match</th></tr></thead><tbody><tr><td>Claude Sonnet 4.6</td><td class="col-highlight cell-best">92.9%</td><td>32.2%</td><td class="col-highlight">51.5%</td><td>28.9%</td><td>44.1%</td><td class="col-highlight">65.5%</td><td>5.8%</td></tr><tr><td>GPT-5 Chat</td><td class="col-highlight cell-best">92.9%</td><td>41.0%</td><td class="col-highlight">59.3%</td><td>32.0%</td><td>47.6%</td><td class="col-highlight">68.9%</td><td>15.6%</td></tr><tr><td>Claude Opus 4.6</td><td class="col-highlight">80.0%</td><td>50.8%</td><td class="col-highlight">66.4%</td><td>34.7%</td><td>48.4%</td><td class="col-highlight cell-best">69.7%</td><td>28.8%</td></tr><tr><td>GPT-4.1</td><td class="col-highlight">67.1%</td><td>56.6%</td><td class="col-highlight cell-best">70.2%</td><td>36.3%</td><td>47.1%</td><td class="col-highlight">68.8%</td><td>38.3%</td></tr><tr><td>GPT-5 Reasoning</td><td class="col-highlight">63.0%</td><td>56.8%</td><td class="col-highlight">69.7%</td><td>35.2%</td><td>45.1%</td><td class="col-highlight">66.9%</td><td>39.4%</td></tr></tbody></table></div>
+<h3>Empathy</h3>
+<p class="metric">Counts — Defects Caught + Over-flagged + Missed + On Track Agreed = N</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>N</th>
+      <th>Defects Caught</th>
+      <th>Over-flagged</th>
+      <th>Missed</th>
+      <th>On Track Agreed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>295</td>
+      <td>96</td>
+      <td>140</td>
+      <td>16</td>
+      <td>43</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>295</td>
+      <td>86</td>
+      <td>142</td>
+      <td>26</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>295</td>
+      <td>72</td>
+      <td>94</td>
+      <td>40</td>
+      <td>89</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>295</td>
+      <td>65</td>
+      <td>104</td>
+      <td>47</td>
+      <td>79</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>287</td>
+      <td>39</td>
+      <td>68</td>
+      <td>68</td>
+      <td>112</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Rates — Catch Rate = Defects Caught/(Defects Caught+Missed) · Agreement = (Defects Caught+On Track Agreed)/N · Human Alignment = Defects Caught/(Defects Caught+Over-flagged) · Balance = F1(Catch, Alignment)</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th class="col-highlight">Catch Rate</th><th>Agreement</th><th class="col-highlight">Adj. Agreement</th><th>Human Alignment</th><th>Balance Score</th><th class="col-highlight">Adj. Balance</th><th>Exact Match</th></tr></thead><tbody><tr><td>GPT-5 Chat</td><td class="col-highlight cell-best">85.7%</td><td>47.1%</td><td class="col-highlight">61.0%</td><td>40.7%</td><td>55.2%</td><td class="col-highlight cell-best">70.4%</td><td>14.6%</td></tr><tr><td>Claude Sonnet 4.6</td><td class="col-highlight">76.8%</td><td>43.1%</td><td class="col-highlight">57.6%</td><td>37.7%</td><td>50.6%</td><td class="col-highlight">67.4%</td><td>13.9%</td></tr><tr><td>GPT-4.1</td><td class="col-highlight">64.3%</td><td>54.6%</td><td class="col-highlight cell-best">64.4%</td><td>43.4%</td><td>51.8%</td><td class="col-highlight">65.8%</td><td>30.2%</td></tr><tr><td>Claude Opus 4.6</td><td class="col-highlight">58.0%</td><td>48.8%</td><td class="col-highlight">61.4%</td><td>38.5%</td><td>46.3%</td><td class="col-highlight">64.2%</td><td>26.8%</td></tr><tr><td>GPT-5 Reasoning</td><td class="col-highlight">36.4%</td><td>52.6%</td><td class="col-highlight">62.0%</td><td>36.4%</td><td>36.4%</td><td class="col-highlight">54.8%</td><td>40.8%</td></tr></tbody></table></div>
+<h3>Behavioral Patterns</h3>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>Deficiency Flagging Summary</dt><dd>Total deficiencies flagged by humans vs. each model. The gap shows how much stricter the model is.</dd><dt>Strictness Bias</dt><dd>How much stricter is the model compared to human evaluators per category? Positive = model flags more.</dd><dt>Verbosity</dt><dd>How long are the model&#x27;s reasoning explanations? More words doesn&#x27;t always mean better.</dd><dt>Option Selection Patterns</dt><dd>How many deficiency labels does the model pick per category on average?</dd><dt>Inter-model Agreement</dt><dd>How often do all 5 models agree with each other (independent of humans)?</dd><dt>Hardest Cases</dt><dd>Cases where every model disagreed with human evaluators — prime candidates for review.</dd></dl></div>
+<div class="section-explainer technical"><h4>How are these metrics calculated?</h4><dl class="metric-definitions"><dt>Deficiency Flagging Summary</dt><dd>Human Flagged = Caught + Missed (constant across models). Model Flagged = Caught + Over-flagged. From Section 1 confusion matrix.</dd><dt>Strictness Bias</dt><dd>Model deficiency rate minus human evaluator base rate, per category. E.g., +40% means the model flags deficiencies 40 percentage points more often than humans.</dd><dt>Verbosity</dt><dd>Word count of each &#x27;reason&#x27; field in the model&#x27;s response. Reported as mean, median, and max across all cases.</dd><dt>Option Selection Patterns</dt><dd>Average count of labels selected per category per case. Higher = model selects multiple deficiency types.</dd><dt>Inter-model Agreement</dt><dd>Per case × category: count how many of the 5 models agree on binary On Track vs deficiency. All agree / majority / no consensus.</dd><dt>Hardest Cases</dt><dd>Per case: across all models × categories, what % matched human evaluators. Bottom 10 cases shown.</dd></dl></div>
+<h3>Deficiency Flagging Summary</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Human Flagged</th>
+      <th>Model Flagged</th>
+      <th>Defects Caught (Overlap)</th>
+      <th>Over-flagged (Model Only)</th>
+      <th>Missed (Human Only)</th>
+      <th>On Track Agreed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>375</td>
+      <td>988</td>
+      <td>341</td>
+      <td>647</td>
+      <td>34</td>
+      <td>158</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>375</td>
+      <td>1023</td>
+      <td>329</td>
+      <td>694</td>
+      <td>46</td>
+      <td>111</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>375</td>
+      <td>839</td>
+      <td>290</td>
+      <td>549</td>
+      <td>85</td>
+      <td>256</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>375</td>
+      <td>693</td>
+      <td>253</td>
+      <td>440</td>
+      <td>122</td>
+      <td>365</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>361</td>
+      <td>636</td>
+      <td>216</td>
+      <td>420</td>
+      <td>145</td>
+      <td>367</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Strictness Bias</h3>
+<p class="metric">Positive bias = stricter than ground truth, negative = more lenient. Overall = average across categories.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Category</th><th>GT Rate</th><th>Claude Opus 4.6</th><th>Claude Sonnet 4.6</th><th>GPT-4.1</th><th>GPT-5 Reasoning</th><th>GPT-5 Chat</th></tr></thead><tbody><tr class="row-highlight"><td>Overall</td><td>31.8%</td><td>71.1% (+39.3%)</td><td>86.7% (+54.9%)</td><td>58.7% (+26.9%)</td><td>55.4% (+23.6%)</td><td>83.7% (+51.9%)</td></tr><tr><td>Communicate Effectively</td><td>33.2%</td><td>93.9% (+60.7%)</td><td>98.3% (+65.1%)</td><td>73.2% (+40.0%)</td><td>94.8% (+61.6%)</td><td>90.5% (+57.3%)</td></tr><tr><td>Accountable</td><td>27.1%</td><td>66.8% (+39.7%)</td><td>78.6% (+51.5%)</td><td>52.2% (+25.1%)</td><td>39.0% (+11.9%)</td><td>80.7% (+53.6%)</td></tr><tr><td>Resourceful</td><td>28.8%</td><td>66.4% (+37.6%)</td><td>92.5% (+63.7%)</td><td>53.2% (+24.4%)</td><td>50.5% (+21.7%)</td><td>83.7% (+54.9%)</td></tr><tr><td>Empathy</td><td>38.0%</td><td>57.3% (+19.3%)</td><td>77.3% (+39.3%)</td><td>56.3% (+18.3%)</td><td>37.3% (-0.7%)</td><td>80.0% (+42.0%)</td></tr></tbody></table></div>
+<div class="chart-wrap"><p class="chart-title">Strictness Bias (Model vs Ground Truth)</p><canvas id="chart_strictness" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_strictness').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["Overall", "Communicate Effectively", "Accountable", "Resourceful", "Empathy"], "datasets": [{"label": "Ground Truth", "data": [31.8, 33.2, 27.1, 28.8, 38.0], "backgroundColor": "rgba(0, 0, 0, 0.2)", "borderColor": "#333", "borderWidth": 2, "borderDash": [5, 5]}, {"label": "Claude Opus 4.6", "data": [71.1, 93.9, 66.8, 66.4, 57.3], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 1}, {"label": "Claude Sonnet 4.6", "data": [86.7, 98.3, 78.6, 92.5, 77.3], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 1}, {"label": "GPT-4.1", "data": [58.7, 73.2, 52.2, 53.2, 56.3], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 1}, {"label": "GPT-5 Reasoning", "data": [55.4, 94.8, 39.0, 50.5, 37.3], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 1}, {"label": "GPT-5 Chat", "data": [83.7, 90.5, 80.7, 83.7, 80.0], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 1}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Strictness: Deficiency Rate \u2014 Overall + by Category (%)"}}, "scales": {"y": {"beginAtZero": true, "max": 100, "title": {"display": true, "text": "Deficiency Rate %"}}}}});})()</script></div>
+<h3>Reason Verbosity</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Mean Words</th>
+      <th>Median Words</th>
+      <th>P95 Words</th>
+      <th>Mean Chars</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>127</td>
+      <td>121</td>
+      <td>206</td>
+      <td>830</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>139</td>
+      <td>135</td>
+      <td>218</td>
+      <td>944</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>68</td>
+      <td>64</td>
+      <td>110</td>
+      <td>467</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>75</td>
+      <td>73</td>
+      <td>112</td>
+      <td>532</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>57</td>
+      <td>55</td>
+      <td>83</td>
+      <td>399</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Option Selection Patterns</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Communicate Effectively</th>
+      <th>Accountable</th>
+      <th>Resourceful</th>
+      <th>Empathy</th>
+      <th>Overall</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>2.6</td>
+      <td>1.5</td>
+      <td>1.4</td>
+      <td>1.5</td>
+      <td>1.8</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>2.8</td>
+      <td>1.7</td>
+      <td>1.4</td>
+      <td>1.9</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>2.2</td>
+      <td>1.2</td>
+      <td>1.3</td>
+      <td>1.7</td>
+      <td>1.6</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>1.8</td>
+      <td>1.1</td>
+      <td>1.1</td>
+      <td>1.1</td>
+      <td>1.3</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>2.3</td>
+      <td>1.1</td>
+      <td>1.1</td>
+      <td>1.8</td>
+      <td>1.6</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Inter-model Agreement</h3>
+<p class="metric">For each (case, category) pair across 295 GT cases, how often do all 5 models agree on the On Track vs. deficiency call?</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Consensus Level</th><th>Cases</th><th>% of Total</th></tr></thead><tbody><tr><td>All models agree</td><td>495</td><td>41.9%</td></tr><tr><td>Majority agree</td><td>681</td><td>57.7%</td></tr><tr><td>Split / no consensus</td><td>4</td><td>0.3%</td></tr><tr class="row-highlight"><td>Total (case × category pairs)</td><td>1180</td><td>100.0%</td></tr></tbody></table></div>
+<div class="chart-wrap"><p class="chart-title">Inter-model Agreement</p><canvas id="chart_agreement" style="max-height:420px"></canvas><p class="chart-note">All Agree = all 5 models make the same On Track vs. deficiency call. Majority = 3+ agree. No Consensus = even split.</p><script>(function(){var ctx=document.getElementById('chart_agreement').getContext('2d');new Chart(ctx,{"type": "doughnut", "data": {"labels": ["All Agree", "Majority Agree", "No Consensus"], "datasets": [{"data": [495, 681, 4], "backgroundColor": ["rgba(46, 204, 113, 0.75)", "rgba(52, 152, 219, 0.75)", "rgba(231, 76, 60, 0.75)"], "borderWidth": 2}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Inter-model Agreement (1180 case\u00d7category pairs)"}, "tooltip": {"callbacks": {"label": function(ctx) {var pcts = [41.9, 57.7, 0.3];return ctx.label + ': ' + ctx.raw + ' (' + pcts[ctx.dataIndex] + '%)';}}}}}});})()</script></div>
+<h3>Hardest 10 Cases (by Input Complexity)</h3>
+<p class="metric">Per-model agreement shows which models handle each hard case best. Green = best performer on that case.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Case ID</th><th>Difficulty</th><th>Size</th><th>Emails</th><th>Notes</th><th>Input Chars</th><th>Mixed GT</th><th>Deficient Cats</th><th class="col-highlight">Overall</th><th>Claude Opus 4.6</th><th>Claude Sonnet 4.6</th><th>GPT-4.1</th><th>GPT-5 Reasoning</th><th>GPT-5 Chat</th></tr></thead><tbody><tr><td>393f5886-b22...</td><td>9</td><td>Large</td><td>31</td><td>15</td><td>83K</td><td>No</td><td>4</td><td class="col-highlight">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td></tr><tr><td>ba7acc18-d80...</td><td>8</td><td>Small</td><td>5</td><td>1</td><td>4K</td><td>Yes</td><td>1</td><td class="col-highlight">35%</td><td>50%</td><td>25%</td><td>50%</td><td>25%</td><td>25%</td></tr><tr><td>c12a7c56-4e0...</td><td>8</td><td>Medium</td><td>20</td><td>22</td><td>37K</td><td>Yes</td><td>2</td><td class="col-highlight">50%</td><td>50%</td><td>50%</td><td>50%</td><td>50%</td><td>50%</td></tr><tr><td>561c6537-8b0...</td><td>8</td><td>Small</td><td>8</td><td>1</td><td>8K</td><td>Yes</td><td>3</td><td class="col-highlight">75%</td><td>75%</td><td>75%</td><td>75%</td><td>75%</td><td>75%</td></tr><tr><td>ec0de097-b60...</td><td>7</td><td>Medium</td><td>19</td><td>1</td><td>17K</td><td>Yes</td><td>1</td><td class="col-highlight">25%</td><td>25%</td><td>25%</td><td>25%</td><td>25%</td><td>25%</td></tr><tr><td>c9ec2b80-bcf...</td><td>7</td><td>Large</td><td>16</td><td>35</td><td>57K</td><td>Yes</td><td>2</td><td class="col-highlight">45%</td><td>50%</td><td>50%</td><td>50%</td><td>25%</td><td>50%</td></tr><tr><td>0238df51-513...</td><td>7</td><td>XL</td><td>100</td><td>18</td><td>527K</td><td>No</td><td>4</td><td class="col-highlight">95%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td>75%</td><td class="cell-best">100%</td></tr><tr><td>082819a1-d36...</td><td>7</td><td>XL</td><td>117</td><td>116</td><td>209K</td><td>No</td><td>4</td><td class="col-highlight">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td><td class="cell-best">100%</td></tr><tr><td>f7b2404e-610...</td><td>6</td><td>Large</td><td>28</td><td>7</td><td>51K</td><td>Yes</td><td>1</td><td class="col-highlight">35%</td><td>25%</td><td>50%</td><td>25%</td><td>50%</td><td>25%</td></tr><tr><td>fd5311cc-860...</td><td>6</td><td>XL</td><td>38</td><td>13</td><td>133K</td><td>Yes</td><td>2</td><td class="col-highlight">50%</td><td>50%</td><td>50%</td><td>50%</td><td>50%</td><td>50%</td></tr></tbody></table></div>
+<h3>Robustness (Metadata Slicing)</h3>
+<p class="metric">Agreement rates sliced by metadata dimensions.</p>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>Metadata Slicing</dt><dd>How does model performance change across different types of cases? Reveals blind spots.</dd><dt>Size Bucket</dt><dd>Case complexity based on input data volume: Small, Medium, Large, XL.</dd><dt>Source Category</dt><dd>on_track (143 cases), deficiency (132), stress_test (20 hard cases), pii_test (15).</dd><dt>Context Window</dt><dd>Does input size affect model accuracy? Cases exceeding the 200K-character limit are truncated before the LLM sees them.</dd></dl></div>
+<div class="section-explainer technical"><h4>How are these slices computed?</h4><dl class="metric-definitions"><dt>Metadata Slicing</dt><dd>Agreement is recomputed for each subset of cases (filtered by size, source, category, or PM patterns).</dd><dt>Size Bucket</dt><dd>Determined by total character count of emails + notes + transcripts in the case input data.</dd><dt>Source Category</dt><dd>Assigned during golden dataset construction based on human evaluator labels and case origin.</dd><dt>Context Window</dt><dd>Input chars = len(emails) + len(notes) + len(transcripts). Cases &gt;200K chars are truncated by prompt_builder.py (removes oldest emails/notes first).</dd></dl></div>
+<h3>By Input Size (Context Window)</h3>
+<p class="metric">Character limit: 200,000. Truncated cases (&gt;200,000 chars): 5/295 (1.7%). Median input: 17,844 chars. Max: 1,299,407 chars.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Input Size</th><th>Cases</th><th>Claude Opus 4.6</th><th class="col-highlight">Claude Opus 4.6 Adj.</th><th>Claude Sonnet 4.6</th><th class="col-highlight">Claude Sonnet 4.6 Adj.</th><th>GPT-4.1</th><th class="col-highlight">GPT-4.1 Adj.</th><th>GPT-5 Reasoning</th><th class="col-highlight">GPT-5 Reasoning Adj.</th><th>GPT-5 Chat</th><th class="col-highlight">GPT-5 Chat Adj.</th></tr></thead><tbody><tr><td>&lt;10K</td><td>27</td><td>44.4%</td><td class="col-highlight">64.8%</td><td>39.8%</td><td class="col-highlight">62.0%</td><td>56.5%</td><td class="col-highlight">71.3%</td><td>49.1%</td><td class="col-highlight">64.8%</td><td>50.0%</td><td class="col-highlight">68.5%</td></tr><tr><td>10K-50K</td><td>236</td><td>44.0%</td><td class="col-highlight">61.1%</td><td>34.1%</td><td class="col-highlight">53.3%</td><td>50.0%</td><td class="col-highlight">63.6%</td><td>50.3%</td><td class="col-highlight">64.8%</td><td>39.2%</td><td class="col-highlight">57.2%</td></tr><tr><td>50K-100K</td><td>22</td><td>58.0%</td><td class="col-highlight">71.6%</td><td>50.0%</td><td class="col-highlight">64.8%</td><td>59.1%</td><td class="col-highlight">70.5%</td><td>52.4%</td><td class="col-highlight">64.3%</td><td>46.6%</td><td class="col-highlight">62.5%</td></tr><tr><td>100K-200K</td><td>5</td><td>70.0%</td><td class="col-highlight">70.0%</td><td>65.0%</td><td class="col-highlight">70.0%</td><td>65.0%</td><td class="col-highlight">70.0%</td><td>70.0%</td><td class="col-highlight cell-best">70.0%</td><td>70.0%</td><td class="col-highlight">75.0%</td></tr><tr><td>&gt;200K (truncated)</td><td>5</td><td>90.0%</td><td class="col-highlight cell-best">90.0%</td><td>90.0%</td><td class="col-highlight cell-best">90.0%</td><td>100.0%</td><td class="col-highlight cell-best">100.0%</td><td>55.0%</td><td class="col-highlight">55.0%</td><td>100.0%</td><td class="col-highlight cell-best">100.0%</td></tr></tbody></table></div>
+<div class="chart-wrap"><p class="chart-title">Agreement by Input Size</p><canvas id="chart_input_size" style="max-height:420px"></canvas><p class="chart-note">Larger cases tend to have higher agreement — more evidence helps models decide. Truncated cases (&gt;200K chars) also perform well since truncation removes older, less-relevant data. Solid bars = raw agreement, faded bars = adjusted (after LLM judge reclassification).</p><script>(function(){var ctx=document.getElementById('chart_input_size').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["<10K (n=27)", "10K-50K (n=236)", "50K-100K (n=22)", "100K-200K (n=5)", ">200K (truncated) (n=5)"], "datasets": [{"label": "Claude Opus 4.6 (Raw)", "data": [44.4, 44.0, 58.0, 70.0, 90.0], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 1}, {"label": "Claude Opus 4.6 (Adj.)", "data": [64.8, 61.1, 71.6, 70.0, 90.0], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 2, "borderDash": [4, 4]}, {"label": "Claude Sonnet 4.6 (Raw)", "data": [39.8, 34.1, 50.0, 65.0, 90.0], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 1}, {"label": "Claude Sonnet 4.6 (Adj.)", "data": [62.0, 53.3, 64.8, 70.0, 90.0], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 2, "borderDash": [4, 4]}, {"label": "GPT-4.1 (Raw)", "data": [56.5, 50.0, 59.1, 65.0, 100.0], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 1}, {"label": "GPT-4.1 (Adj.)", "data": [71.3, 63.6, 70.5, 70.0, 100.0], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 2, "borderDash": [4, 4]}, {"label": "GPT-5 Reasoning (Raw)", "data": [49.1, 50.3, 52.4, 70.0, 55.0], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 1}, {"label": "GPT-5 Reasoning (Adj.)", "data": [64.8, 64.8, 64.3, 70.0, 55.0], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 2, "borderDash": [4, 4]}, {"label": "GPT-5 Chat (Raw)", "data": [50.0, 39.2, 46.6, 70.0, 100.0], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 1}, {"label": "GPT-5 Chat (Adj.)", "data": [68.5, 57.2, 62.5, 75.0, 100.0], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 2, "borderDash": [4, 4]}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Agreement by Input Size \u2014 Raw vs Adjusted"}}, "scales": {"y": {"beginAtZero": true, "max": 100, "title": {"display": true, "text": "Agreement %"}}}}});})()</script></div>
+<h3>By source_category</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Value</th>
+      <th>Cases</th>
+      <th>Claude Opus 4.6</th>
+      <th>Claude Sonnet 4.6</th>
+      <th>GPT-4.1</th>
+      <th>GPT-5 Reasoning</th>
+      <th>GPT-5 Chat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>deficiency</td>
+      <td>132</td>
+      <td>56.6%</td>
+      <td>58.0%</td>
+      <td>53.6%</td>
+      <td>50.6%</td>
+      <td>59.3%</td>
+    </tr>
+    <tr>
+      <td>on_track</td>
+      <td>143</td>
+      <td>32.7%</td>
+      <td>14.0%</td>
+      <td>48.4%</td>
+      <td>50.7%</td>
+      <td>22.7%</td>
+    </tr>
+    <tr>
+      <td>stress_test</td>
+      <td>20</td>
+      <td>75.0%</td>
+      <td>67.5%</td>
+      <td>72.5%</td>
+      <td>52.5%</td>
+      <td>70.0%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>By label_contaminated</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Value</th>
+      <th>Cases</th>
+      <th>Claude Opus 4.6</th>
+      <th>Claude Sonnet 4.6</th>
+      <th>GPT-4.1</th>
+      <th>GPT-5 Reasoning</th>
+      <th>GPT-5 Chat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>False</td>
+      <td>279</td>
+      <td>45.8%</td>
+      <td>36.5%</td>
+      <td>52.0%</td>
+      <td>50.2%</td>
+      <td>41.8%</td>
+    </tr>
+    <tr>
+      <td>True</td>
+      <td>16</td>
+      <td>54.7%</td>
+      <td>51.6%</td>
+      <td>59.4%</td>
+      <td>60.9%</td>
+      <td>51.6%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>By PM Pattern</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Pattern</th>
+      <th>Cases</th>
+      <th>Claude Opus 4.6</th>
+      <th>Claude Sonnet 4.6</th>
+      <th>GPT-4.1</th>
+      <th>GPT-5 Reasoning</th>
+      <th>GPT-5 Chat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ambiguous_names</td>
+      <td>221</td>
+      <td>42.5%</td>
+      <td>33.4%</td>
+      <td>49.3%</td>
+      <td>48.9%</td>
+      <td>38.0%</td>
+    </tr>
+    <tr>
+      <td>escalated_deficiency</td>
+      <td>45</td>
+      <td>63.3%</td>
+      <td>66.7%</td>
+      <td>65.6%</td>
+      <td>57.4%</td>
+      <td>65.0%</td>
+    </tr>
+    <tr>
+      <td>long_followups</td>
+      <td>95</td>
+      <td>49.2%</td>
+      <td>42.1%</td>
+      <td>50.5%</td>
+      <td>48.9%</td>
+      <td>42.4%</td>
+    </tr>
+    <tr>
+      <td>perfect_case</td>
+      <td>149</td>
+      <td>33.1%</td>
+      <td>13.8%</td>
+      <td>47.1%</td>
+      <td>49.7%</td>
+      <td>22.1%</td>
+    </tr>
+    <tr>
+      <td>sla_breach</td>
+      <td>94</td>
+      <td>46.0%</td>
+      <td>39.9%</td>
+      <td>53.5%</td>
+      <td>52.5%</td>
+      <td>44.1%</td>
+    </tr>
+    <tr>
+      <td>spelling_errors</td>
+      <td>1</td>
+      <td>75.0%</td>
+      <td>75.0%</td>
+      <td>100.0%</td>
+      <td>0.0%</td>
+      <td>100.0%</td>
+    </tr>
+    <tr>
+      <td>unverified_resolution</td>
+      <td>2</td>
+      <td>87.5%</td>
+      <td>62.5%</td>
+      <td>50.0%</td>
+      <td>62.5%</td>
+      <td>100.0%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h2 id="section-2-quality-checks">Section 2: Quality Checks</h2>
+<p class="metric">Deterministic quality checks across all 310 cases. No LLM required.</p>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>Option Exclusivity</dt><dd>On Track must never appear with deficiency labels. Violation = model is confused. 0 = no violations.</dd><dt>Placeholder Echo</dt><dd>Model repeats {NAMEPII} redaction tokens from input. Cosmetic, not a security issue. 0 = no violations.</dd><dt>Absence Reasoning</dt><dd>Reason says &#x27;no evidence of X&#x27; rather than citing specific case data. Lazy reasoning. 0 = no violations.</dd><dt>Data Sufficiency</dt><dd>Model says everything is fine despite having no emails or notes to evaluate. 0 = no violations.</dd><dt>Low Specificity</dt><dd>Reason lacks concrete details — no dates, actions, or case-specific references. 0 = no violations.</dd><dt>Summary Incoherence</dt><dd>Evaluation summary contradicts the labels chosen. Most common violation. 0 = no violations.</dd><dt>Structure Issues</dt><dd>Response is malformed or missing expected categories. Usually from truncation. 0 = no violations.</dd><dt>PII Compliance</dt><dd>Did the model leak real personal information (emails, phones, names)? Any real leak disqualifies the model. All models pass.</dd></dl></div>
+<div class="section-explainer technical"><h4>How are these checks detected?</h4><dl class="metric-definitions"><dt>Option Exclusivity</dt><dd>Split label string by &#x27;;&#x27;. Flag if On Track/No blockers co-exists with any deficiency label.</dd><dt>Placeholder Echo</dt><dd>Regex search for placeholder patterns ({NAMEPII}, {EMAILPII}, etc.) in the full response text.</dd><dt>Absence Reasoning</dt><dd>If response_value = On Track AND reason matches absence patterns (&#x27;no evidence&#x27;, &#x27;did not find&#x27;, &#x27;no indication&#x27;).</dd><dt>Data Sufficiency</dt><dd>If emails and notes are both empty AND all categories are On Track AND evaluation_summary does not mention data limitations.</dd><dt>Low Specificity</dt><dd>If reason has &lt; 15 words AND zero date references AND zero action verbs.</dd><dt>Summary Incoherence</dt><dd>If deficiency count &gt;= 2 AND summary contains positive terms (&#x27;well&#x27;, &#x27;excellent&#x27;, &#x27;strong&#x27;, &#x27;commendable&#x27;, etc.).</dd><dt>Structure Issues</dt><dd>Response must have exactly 5 category entries (matching v2 criteria). Also counts JSON parse failures.</dd><dt>PII Compliance</dt><dd>Regex patterns for real email addresses, phone numbers, and known synthetic names scanned across the full model response. Placeholder echo ({NAMEPII} etc.) tracked separately — not a real breach.</dd></dl></div>
+<h3>Critical Checks (affect quality score)</h3>
+<p class="metric">These checks detect real quality problems. Total violations and Clean Cases are based on critical checks only.</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Option Exclusivity</th>
+      <th>Absence Reasoning</th>
+      <th>Data Sufficiency</th>
+      <th>Low Specificity</th>
+      <th>Structure Issues</th>
+      <th>Total</th>
+      <th>Clean Cases</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>310/310</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>309/310</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>310/310</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>8</td>
+      <td>302/310</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>310/310</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Informational Checks (not scored)</h3>
+<p class="metric">Placeholder Echo = model quoting redaction tokens ({NAMEPII}) from input — cosmetic, not a security issue. Summary Incoherence = 3+ deficiency categories but positive evaluation_summary — blunt keyword heuristic.</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Placeholder Echo</th>
+      <th>Summary Incoherence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>10</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>79</td>
+      <td>46</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>51</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>0</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>16</td>
+      <td>34</td>
+    </tr>
+  </tbody>
+</table></div>
+<div class="chart-wrap"><p class="chart-title">Quality Violations Breakdown</p><canvas id="chart_quality_violations" style="max-height:420px"></canvas><p class="chart-note">Each color segment represents one check type. Shorter total bars = fewer violations = better.</p><script>(function(){var ctx=document.getElementById('chart_quality_violations').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["Claude Opus 4.6", "Claude Sonnet 4.6", "GPT-4.1", "GPT-5 Reasoning", "GPT-5 Chat"], "datasets": [{"label": "Option Exclusivity", "data": [0, 0, 0, 0, 0], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderWidth": 1}, {"label": "Absence Reasoning", "data": [0, 0, 0, 0, 0], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderWidth": 1}, {"label": "Data Sufficiency", "data": [0, 0, 0, 0, 0], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderWidth": 1}, {"label": "Low Specificity", "data": [0, 0, 0, 0, 0], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderWidth": 1}, {"label": "Structure Issues", "data": [0, 1, 0, 8, 0], "backgroundColor": "rgba(26, 188, 156, 0.7)", "borderWidth": 1}, {"label": "Placeholder Echo", "data": [10, 79, 51, 0, 16], "backgroundColor": "rgba(241, 196, 15, 0.7)", "borderWidth": 1}, {"label": "Summary Incoherence", "data": [27, 46, 8, 24, 34], "backgroundColor": "rgba(149, 165, 166, 0.7)", "borderWidth": 1}]}, "options": {"indexAxis": "y", "responsive": true, "plugins": {"title": {"display": true, "text": "Quality Violations by Check Type"}, "tooltip": {"mode": "index", "intersect": false}}, "scales": {"x": {"stacked": true, "beginAtZero": true, "title": {"display": true, "text": "Violation Count"}}, "y": {"stacked": true}}}});})()</script></div>
+<h3>PII Compliance</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Real PII Leaks</th>
+      <th>Verdict</th>
+      <th>Placeholder Echo Cases</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>79</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>0</td>
+      <td>PASS</td>
+      <td>16</td>
+    </tr>
+  </tbody>
+</table></div>
+<p class="metric">Real PII: zero actual leaks across all models. Placeholder echo = model quoting redaction tokens ({NAMEPII}, etc.) from input — not real PII.</p>
+<h2 id="section-3-operational">Section 3: Operational</h2>
+<p class="metric">Latency, cost, reliability, and caching metrics from run logs.</p>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>P95 Latency</dt><dd>How fast is the model? 95% of cases complete within this time.</dd><dt>Cost/Case</dt><dd>How much does it cost to evaluate one case?</dd><dt>Monthly @ 10K</dt><dd>Projected monthly cost at typical production volume (10,000 cases/month).</dd><dt>Token Distribution</dt><dd>Min/max/P95 for input and output tokens per case. Shows how token usage varies across cases of different sizes.</dd><dt>Prompt Composition</dt><dd>What makes up each API call: system prompt (7.4K chars, fixed), criteria (15.3K chars, fixed), and case data (varies). The fixed portions are cacheable.</dd><dt>Cache Efficiency</dt><dd>How much of the input is served from cache vs sent fresh. Higher cache hit = lower cost and faster response.</dd><dt>Response Size</dt><dd>How much output each model produces. Reasoning tokens (GPT-5 Reasoning) are internal chain-of-thought that aren&#x27;t visible in the response but add to cost and latency.</dd></dl></div>
+<div class="section-explainer technical"><h4>How are these metrics calculated?</h4><dl class="metric-definitions"><dt>P95 Latency</dt><dd>95th percentile of response times from run log. Excludes failures and retries.</dd><dt>Cost/Case</dt><dd>Per-case cost = input token cost + output token cost. Claude: cache-aware pricing (uncached ×1.0, cache creation ×1.25, cache read ×0.10 of base input rate). GPT: flat input pricing (Azure cache discount not passed through CAPI). Rates from pricing.json.</dd><dt>Monthly @ 10K</dt><dd>Cost/Case × 10,000. Gives a practical budget comparison between models.</dd><dt>Token Distribution</dt><dd>Per-case token counts from run log. Input = system prompt + criteria + case data (all tokenized together). Output = model response tokens. Reasoning = internal CoT (GPT-5 Reasoning only, adds to cost but not visible in response).</dd><dt>Prompt Composition</dt><dd>Character counts from run log. System + criteria are identical across models (~22.7K chars, cacheable). Case data varies per case (avg ~27K, max 200K). Chars/Token: ~3.6 (Claude), ~4.0 (GPT).</dd><dt>Cache Efficiency</dt><dd>Cache read tokens = tokens served from prompt cache (cheaper, faster). Cache creation = first-time cache writes. Uncached = tokens processed fresh each time.</dd></dl></div>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th>Cases</th><th>Avg Latency</th><th class="col-highlight">P95 Latency</th><th class="col-highlight">Cost/Case</th><th>Monthly (10K)</th><th>Success%</th><th>Retry%</th><th>Cache Hit%</th></tr></thead><tbody><tr><td>Claude Opus 4.6</td><td>310</td><td>53.7s</td><td class="col-highlight">76.5s</td><td class="col-highlight">$0.1073</td><td>$1072.99</td><td>100.0%</td><td>0.0%</td><td>35.1%</td></tr><tr><td>Claude Sonnet 4.6</td><td>310</td><td>62.8s</td><td class="col-highlight">84.4s</td><td class="col-highlight">$0.0714</td><td>$713.80</td><td>100.0%</td><td>0.0%</td><td>35.1%</td></tr><tr><td>GPT-4.1</td><td>310</td><td>9.5s</td><td class="col-highlight cell-best">14.3s</td><td class="col-highlight cell-best">$0.0343</td><td>$343.25</td><td>100.0%</td><td>0.0%</td><td>35.2%</td></tr><tr><td>GPT-5 Reasoning</td><td>302</td><td>102.1s</td><td class="col-highlight">145.0s</td><td class="col-highlight">$0.0738</td><td>$737.91</td><td>97.4%</td><td>0.0%</td><td>34.5%</td></tr><tr><td>GPT-5 Chat</td><td>310</td><td>11.7s</td><td class="col-highlight">15.1s</td><td class="col-highlight cell-best">$0.0259</td><td>$259.10</td><td>100.0%</td><td>0.0%</td><td>36.4%</td></tr></tbody></table></div>
+<h3>Token Distribution (per case)</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Input Min</th>
+      <th>Input Max</th>
+      <th>Input P95</th>
+      <th>Output Max</th>
+      <th>Output P95</th>
+      <th>Total P95</th>
+      <th>Reasoning Max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>6,327</td>
+      <td>145,526</td>
+      <td>33,547</td>
+      <td>4,000</td>
+      <td>3,096</td>
+      <td>36,448</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>6,327</td>
+      <td>145,526</td>
+      <td>33,547</td>
+      <td>4,000</td>
+      <td>3,898</td>
+      <td>36,516</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>5,763</td>
+      <td>116,785</td>
+      <td>29,396</td>
+      <td>1,448</td>
+      <td>1,252</td>
+      <td>30,422</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>5,762</td>
+      <td>116,784</td>
+      <td>30,682</td>
+      <td>8,761</td>
+      <td>6,958</td>
+      <td>36,698</td>
+      <td>7,040</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>5,763</td>
+      <td>116,785</td>
+      <td>29,396</td>
+      <td>1,188</td>
+      <td>1,083</td>
+      <td>30,437</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Prompt Composition</h3>
+<p class="metric">Fixed per call: system prompt (7,434 chars) + criteria (15,274 chars) = 22,708 chars (cacheable). Variable: case data (avg 27,039 chars, P95 76,397, max 200,005). Chars/token ratio: ~3.6 (Claude), ~4.0 (GPT).</p>
+<h3>Cache Efficiency (all cases)</h3>
+<p class="metric">Totals across all cases. System prompt + criteria are cached (fixed per call); case data varies per call and is always uncached.</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Total Input Tokens</th>
+      <th>Cached (Read)</th>
+      <th>Cache Created</th>
+      <th>Uncached</th>
+      <th>Cache Hit%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>4,689,333</td>
+      <td>1,647,279</td>
+      <td>5,331</td>
+      <td>3,036,723</td>
+      <td>35.1%</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>4,689,333</td>
+      <td>1,647,279</td>
+      <td>5,331</td>
+      <td>3,036,723</td>
+      <td>35.1%</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>4,106,320</td>
+      <td>1,443,712</td>
+      <td>0</td>
+      <td>2,662,608</td>
+      <td>35.2%</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>4,013,775</td>
+      <td>1,383,936</td>
+      <td>0</td>
+      <td>2,629,839</td>
+      <td>34.5%</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>4,106,320</td>
+      <td>1,493,248</td>
+      <td>0</td>
+      <td>2,613,072</td>
+      <td>36.4%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Response Size</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Avg Output Tokens</th>
+      <th>Max Output Tokens</th>
+      <th>Avg Response Chars</th>
+      <th>Max Response Chars</th>
+      <th>Avg Reasoning Tokens</th>
+      <th>Max Reasoning Tokens</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>2,222</td>
+      <td>4,000</td>
+      <td>9,047</td>
+      <td>15,146</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>2,689</td>
+      <td>4,000</td>
+      <td>11,320</td>
+      <td>17,302</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>979</td>
+      <td>1,448</td>
+      <td>4,405</td>
+      <td>6,605</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>5,718</td>
+      <td>8,761</td>
+      <td>6,744</td>
+      <td>10,357</td>
+      <td>4,206</td>
+      <td>7,040</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>935</td>
+      <td>1,188</td>
+      <td>4,136</td>
+      <td>5,409</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table></div>
+<div class="chart-wrap"><p class="chart-title">Operational Trade-offs</p><canvas id="chart_operational_bubble" style="max-height:420px"></canvas><p class="chart-note">Bottom-left quadrant is the sweet spot: fast and cheap. Bubble size reflects monthly cost at 10K cases.</p><script>(function(){var ctx=document.getElementById('chart_operational_bubble').getContext('2d');new Chart(ctx,{"type": "bubble", "data": {"datasets": [{"label": "Claude Opus 4.6", "data": [{"x": 76.5, "y": 0.1073, "r": 40}], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "#3498db", "borderWidth": 2}, {"label": "Claude Sonnet 4.6", "data": [{"x": 84.4, "y": 0.0714, "r": 40}], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "#e74c3c", "borderWidth": 2}, {"label": "GPT-4.1", "data": [{"x": 14.3, "y": 0.0343, "r": 27.8}], "backgroundColor": "rgba(46, 204, 113, 0.7)", "borderColor": "#2ecc71", "borderWidth": 2}, {"label": "GPT-5 Reasoning", "data": [{"x": 145.0, "y": 0.0738, "r": 40}], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "#f39c12", "borderWidth": 2}, {"label": "GPT-5 Chat", "data": [{"x": 15.1, "y": 0.0259, "r": 24.1}], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "#9b59b6", "borderWidth": 2}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Operational Trade-offs: Latency vs Cost"}, "tooltip": {"callbacks": {"label": function(ctx) {var monthly = {"Claude Opus 4.6": 1073.0, "Claude Sonnet 4.6": 714.0, "GPT-4.1": 343.0, "GPT-5 Reasoning": 738.0, "GPT-5 Chat": 259.0};var pt = ctx.raw;var name = ctx.dataset.label;return [name, 'P95: ' + pt.x + 's', 'Cost: $' + pt.y.toFixed(4), 'Monthly (10K): $' + (monthly[name] || 0)];}}}}, "scales": {"x": {"title": {"display": true, "text": "P95 Latency (seconds)"}, "beginAtZero": true}, "y": {"title": {"display": true, "text": "Cost per Case ($)"}, "beginAtZero": true}}}});})()</script></div>
+<h2 id="section-4-decision-matrix">Section 4: Decision Matrix</h2>
+<div class="section-explainer"><h4>What does this section measure?</h4><dl class="metric-definitions"><dt>Weighted Score</dt><dd>A single number ranking each model across 6 dimensions using raw performance percentages. Higher = better overall fit for QEA.</dd><dt>Catch Rate (30%)</dt><dd>Catching quality issues is QEA&#x27;s core mission — highest weight.</dd><dt>Agreement (25%)</dt><dd>How often the model&#x27;s binary call matches human evaluators.</dd><dt>Latency P95 (15%)</dt><dd>Faster response = higher score. Near-real-time evaluation matters.</dd><dt>Cost Efficiency (15%)</dt><dd>Lower cost per case = higher score.</dd><dt>Quality Checks (10%)</dt><dd>Deterministic quality pass rate — models with fewer violations (incoherence, structure issues) score higher.</dd><dt>Reliability (5%)</dt><dd>Success rate — model must consistently return valid responses. Low weight: all models &gt;97%.</dd></dl></div>
+<div class="section-explainer technical"><h4>How is the score calculated?</h4><dl class="metric-definitions"><dt>Higher-is-better dimensions</dt><dd>Catch rate, agreement, quality, reliability use the raw percentage directly (e.g., 90.9% catch rate → score 90.9).</dd><dt>Lower-is-better dimensions</dt><dd>Cost and latency use ratio scoring: (best model / this model) × 100. Cheapest model = 100; 2× more expensive = 50.</dd><dt>Weighting</dt><dd>Dimension scores are multiplied by weights (30% + 25% + 15% + 15% + 10% + 5% = 100%).</dd><dt>Final Score</dt><dd>Sum of all weighted dimension scores. Scores are stable — adding or removing a model does not change other models&#x27; scores (except cost/latency ratios if the cheapest/fastest model changes).</dd></dl></div>
+<h3>Dimension Weights</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Dimension</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>catch_rate</td>
+      <td>30%</td>
+    </tr>
+    <tr>
+      <td>adj_agreement</td>
+      <td>25%</td>
+    </tr>
+    <tr>
+      <td>quality_checks</td>
+      <td>10%</td>
+    </tr>
+    <tr>
+      <td>latency_p95</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <td>cost_efficiency</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <td>reliability</td>
+      <td>5%</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Metrics (Raw vs Adjusted)</h3>
+<p class="metric">Adj. columns reflect LLM judge corrections. Scoring uses adjusted values (highlighted).</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Model</th><th>Catch Rate</th><th>Agreement (Raw)</th><th class="col-highlight">Agreement (Adj.)</th><th>Quality</th><th>Balance (Raw)</th><th>Balance (Adj.)</th><th>Cost/Case</th><th>P95 Lat(s)</th><th>Reliability</th></tr></thead><tbody><tr><td>GPT-5 Chat</td><td>94.1%</td><td>42.3%</td><td class="col-highlight">59.7%</td><td>100.0%</td><td>50.0%</td><td>69.6%</td><td>$0.0259</td><td>15.1</td><td>100.0%</td></tr><tr><td>GPT-4.1</td><td>77.0%</td><td>52.4%</td><td class="col-highlight cell-best">65.5%</td><td>100.0%</td><td>47.4%</td><td>66.7%</td><td>$0.0343</td><td>14.3</td><td>100.0%</td></tr><tr><td>Claude Sonnet 4.6</td><td>92.3%</td><td>37.3%</td><td class="col-highlight">55.8%</td><td>99.7%</td><td>47.1%</td><td>67.8%</td><td>$0.0714</td><td>84.4</td><td>100.0%</td></tr><tr><td>Claude Opus 4.6</td><td>85.1%</td><td>46.3%</td><td class="col-highlight">62.9%</td><td>100.0%</td><td>47.8%</td><td>68.9%</td><td>$0.1073</td><td>76.5</td><td>100.0%</td></tr><tr><td>GPT-5 Reasoning</td><td>72.2%</td><td>50.8%</td><td class="col-highlight">64.7%</td><td>97.4%</td><td>43.3%</td><td>65.0%</td><td>$0.0738</td><td>145.0</td><td>97.4%</td></tr></tbody></table></div>
+<h3>Dimension Scores (higher = better)</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Catch Rate</th>
+      <th>Agreement</th>
+      <th>Quality</th>
+      <th>Cost</th>
+      <th>Latency</th>
+      <th>Reliability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>94.1</td>
+      <td>59.7</td>
+      <td>100.0</td>
+      <td>100.0</td>
+      <td>94.4</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>77.0</td>
+      <td>65.5</td>
+      <td>100.0</td>
+      <td>75.5</td>
+      <td>100.0</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>92.3</td>
+      <td>55.8</td>
+      <td>99.7</td>
+      <td>36.3</td>
+      <td>16.9</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>85.1</td>
+      <td>62.9</td>
+      <td>100.0</td>
+      <td>24.1</td>
+      <td>18.6</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>72.2</td>
+      <td>64.7</td>
+      <td>97.4</td>
+      <td>35.1</td>
+      <td>9.8</td>
+      <td>97.4</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Weighted Contributions</h3>
+<p class="metric">Each cell = Dimension Score × Weight. Row sum = Weighted Score.</p>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Catch(30%)</th>
+      <th>Agree(25%)</th>
+      <th>Quality(10%)</th>
+      <th>Latency(15%)</th>
+      <th>Cost(15%)</th>
+      <th>Reliab(5%)</th>
+      <th>= Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>28.2</td>
+      <td>14.9</td>
+      <td>10.0</td>
+      <td>14.2</td>
+      <td>15.0</td>
+      <td>5.0</td>
+      <td>87.3</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>23.1</td>
+      <td>16.4</td>
+      <td>10.0</td>
+      <td>15.0</td>
+      <td>11.3</td>
+      <td>5.0</td>
+      <td>80.8</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>27.7</td>
+      <td>14.0</td>
+      <td>10.0</td>
+      <td>2.5</td>
+      <td>5.4</td>
+      <td>5.0</td>
+      <td>64.6</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>25.5</td>
+      <td>15.7</td>
+      <td>10.0</td>
+      <td>2.8</td>
+      <td>3.6</td>
+      <td>5.0</td>
+      <td>62.7</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>21.7</td>
+      <td>16.2</td>
+      <td>9.7</td>
+      <td>1.5</td>
+      <td>5.3</td>
+      <td>4.9</td>
+      <td>59.2</td>
+    </tr>
+  </tbody>
+</table></div>
+<h3>Final Ranking</h3>
+<div class="table-wrap"><table class="dataframe data-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Weighted Score</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GPT-5 Chat</td>
+      <td>87.3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>GPT-4.1</td>
+      <td>80.8</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Claude Sonnet 4.6</td>
+      <td>64.6</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Claude Opus 4.6</td>
+      <td>62.7</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>GPT-5 Reasoning</td>
+      <td>59.2</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table></div>
+<div class="chart-wrap"><p class="chart-title">Decision Matrix Radar</p><canvas id="chart_radar" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_radar').getContext('2d');new Chart(ctx,{"type": "radar", "data": {"labels": ["Catch Rate", "Agreement", "Quality", "Cost", "Latency", "Reliability"], "datasets": [{"label": "GPT-5 Chat", "data": [100.0, 39.5, 100.0, 100.0, 93.8, 100.0], "backgroundColor": "rgba(52, 152, 219, 0.2)", "borderColor": "#3498db", "borderWidth": 2, "pointRadius": 3}, {"label": "GPT-4.1", "data": [21.9, 100.0, 100.0, 67.7, 100.0, 100.0], "backgroundColor": "rgba(231, 76, 60, 0.2)", "borderColor": "#e74c3c", "borderWidth": 2, "pointRadius": 3}, {"label": "Claude Sonnet 4.6", "data": [91.4, 0.0, 87.5, 16.0, 7.8, 100.0], "backgroundColor": "rgba(46, 204, 113, 0.2)", "borderColor": "#2ecc71", "borderWidth": 2, "pointRadius": 3}, {"label": "Claude Opus 4.6", "data": [58.9, 72.8, 100.0, 0.0, 9.7, 100.0], "backgroundColor": "rgba(243, 156, 18, 0.2)", "borderColor": "#f39c12", "borderWidth": 2, "pointRadius": 3}, {"label": "GPT-5 Reasoning", "data": [0.0, 91.9, 0.0, 14.5, 0.0, 0.0], "backgroundColor": "rgba(155, 89, 182, 0.2)", "borderColor": "#9b59b6", "borderWidth": 2, "pointRadius": 3}]}, "options": {"responsive": true, "plugins": {"title": {"display": true, "text": "Model Profile Comparison (normalized per axis for visual comparison)"}, "subtitle": {"display": true, "text": "Note: Axes are scaled 0-100 per dimension (best=100, worst=0). See tables for actual scores."}}, "scales": {"r": {"beginAtZero": true, "max": 100}}}});})()</script></div>
+<div class="chart-wrap"><p class="chart-title">Final Model Ranking</p><canvas id="chart_ranking" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_ranking').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["GPT-5 Chat", "GPT-4.1", "Claude Sonnet 4.6", "Claude Opus 4.6", "GPT-5 Reasoning"], "datasets": [{"label": "Weighted Score", "data": [87.3, 80.8, 64.6, 62.7, 59.2], "backgroundColor": ["rgba(52, 152, 219, 0.7)", "rgba(231, 76, 60, 0.7)", "rgba(46, 204, 113, 0.7)", "rgba(243, 156, 18, 0.7)", "rgba(155, 89, 182, 0.7)"], "borderColor": ["#3498db", "#e74c3c", "#2ecc71", "#f39c12", "#9b59b6"], "borderWidth": 1}]}, "options": {"indexAxis": "y", "responsive": true, "plugins": {"title": {"display": true, "text": "Final Model Ranking"}}, "scales": {"x": {"beginAtZero": true, "max": 100}}}});})()</script></div>
+<div class="chart-wrap"><p class="chart-title">Score Breakdown: Which Dimensions Contribute Most?</p><canvas id="chart_ranking_stacked" style="max-height:420px"></canvas><script>(function(){var ctx=document.getElementById('chart_ranking_stacked').getContext('2d');new Chart(ctx,{"type": "bar", "data": {"labels": ["GPT-5 Chat", "GPT-4.1", "Claude Sonnet 4.6", "Claude Opus 4.6", "GPT-5 Reasoning"], "datasets": [{"label": "Catch Rate (30%)", "data": [28.2, 23.1, 27.7, 25.5, 21.7], "backgroundColor": "rgba(231, 76, 60, 0.7)", "borderColor": "rgba(231, 76, 60, 1)", "borderWidth": 1}, {"label": "Agreement (25%)", "data": [14.9, 16.4, 14.0, 15.7, 16.2], "backgroundColor": "rgba(52, 152, 219, 0.7)", "borderColor": "rgba(52, 152, 219, 1)", "borderWidth": 1}, {"label": "Latency (15%)", "data": [14.2, 15.0, 2.5, 2.8, 1.5], "backgroundColor": "rgba(243, 156, 18, 0.7)", "borderColor": "rgba(243, 156, 18, 1)", "borderWidth": 1}, {"label": "Cost (15%)", "data": [15.0, 11.3, 5.4, 3.6, 5.3], "backgroundColor": "rgba(26, 188, 156, 0.7)", "borderColor": "rgba(26, 188, 156, 1)", "borderWidth": 1}, {"label": "Quality (10%)", "data": [10.0, 10.0, 10.0, 10.0, 9.7], "backgroundColor": "rgba(155, 89, 182, 0.7)", "borderColor": "rgba(155, 89, 182, 1)", "borderWidth": 1}, {"label": "Reliability (5%)", "data": [5.0, 5.0, 5.0, 5.0, 4.9], "backgroundColor": "rgba(149, 165, 166, 0.7)", "borderColor": "rgba(149, 165, 166, 1)", "borderWidth": 1}]}, "options": {"indexAxis": "y", "responsive": true, "plugins": {"title": {"display": true, "text": "Weighted Score Breakdown by Dimension"}, "tooltip": {"mode": "index", "intersect": false}}, "scales": {"x": {"stacked": true, "beginAtZero": true, "max": 100, "title": {"display": true, "text": "Points"}}, "y": {"stacked": true}}}});})()</script></div>
+<h3>Recommendation</h3>
+<p class="metric">Top model: GPT-5 Chat (weighted score: 87.3/100)</p>
+<p class="timestamp">Generated 2026-03-15 21:30:38</p>
+</div>
+</body>
+</html>

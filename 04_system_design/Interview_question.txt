@@ -1,0 +1,13 @@
+System Design Interview Question
+=================================
+
+Design an event-driven agentic platform that can autonomously orchestrate multi-step AI
+workflows. The platform should support multiple agents that react to events, maintain
+state across long-running tasks, handle failures gracefully, and scale to thousands of
+concurrent agent executions.
+'
+
+how token works , how grpc works
+how would you reduce latency
+What will you do if Orchestration failures
+how woud you manage states
